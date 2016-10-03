@@ -1,0 +1,16 @@
+# Scattering from different atoms
+# (c) Thomas Proffen, 2003
+
+title=Units reciprocal space
+
+text=1,5,1.0,Unit length x (&Aring;)
+text=2,5,1.0,Unit length y (&Aring;)
+
+HR
+radio=3,3,1,Unit length type
+User supplied,1
+<i>h</i> (fixed unit length),2
+<i>Q</i> (fixed unit length),3
+
+HR
+submit

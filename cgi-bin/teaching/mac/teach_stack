@@ -1,0 +1,230 @@
+#!/bin/csh
+##################################################################
+# This macro exectutes DISCUS and KUPLOT for stacking fault 
+# example ..
+#
+# Version: 1.0
+# Author:  Th. Proffen  (tproffen@lanl.gov)
+#          R.B. Neder   (reinhard.neder@mail.uni-wuerzburg.de)
+##################################################################
+# Required parameters:
+#
+#    $1 : Probability ALPHA
+#    $2 : Probability BETA
+#    $3 : Radiation to be used
+#    $4 : Output graphics size
+#
+##################################################################
+# Here we start DISCUS
+##################################################################
+#
+discus << EOF > /dev/null
+set prompt,redirect
+set error,exit
+fopen 1,teach_stack_$1_$2_$3_$4.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+if ($1.lt.0.0 .or. $1.gt.1.0 .or. $2.lt.0.0 .or. $2.gt.1.0) then
+  fopen 1,teach_stack_$1_$2_$3_$4.err
+  fput 1,'<h2>Probabilities must be 0.0 to 1.0 !</h2>'
+  fclose 1
+else
+#
+  sys echo 'title Structure in Spacegroup P1      '  > $$.cll
+  sys echo 'spcgr P1                              ' >> $$.cll
+  sys echo 'cell 5.00 5.00 5.00 90. 90. 90.       ' >> $$.cll
+  sys echo 'atoms                                 ' >> $$.cll
+  sys echo 'SI   0.00  0.00  0.00   0.1           ' >> $$.cll
+#
+  r[1]=$1
+  r[2]=$2
+#
+  i[3]  = 50
+  i[4]  = 50
+  i[5]  = 1
+  i[7]  = 1
+  i[10] = -1*i[3]/2
+  i[11] =  1*i[3]/2
+#
+  read
+  cell $$.cll,i[3],1,1
+#
+  i[1]=0
+#
+  if(ran(0).gt.0.5) then
+    #A B
+    i[2]=1
+  else
+    #A C
+    i[2]=2
+  endif
+# 
+  r[3]=i[2]*1./3.
+  do i[6]=i[10],i[11]
+    ins SI,i[6]+r[3],i[7],0.0,(i[2]+1)*0.1
+  enddo
+#
+  do i[7]=2,i[4]
+    if(mod(i[2]-i[1]+3,3).eq.1) then
+#   *** AB sequence
+      i[1]=i[2]
+      if(ran(0).lt.r[1]) then
+#       AB A   hexagonal sequence
+        i[2]=mod(i[2]+2,3)
+      else
+#       AB C   cubic sequence
+        i[2]=mod(i[2]+1,3)
+      endif
+    else
+#   *** BA sequence
+      i[1]=i[2]
+      if(ran(0).lt.r[2]) then
+#       BA B   hexagonal sequence
+        i[2]=mod(i[2]+1,3)
+      else
+#       AB C   cubic sequence
+        i[2]=mod(i[2]+2,3)
+      endif
+    endif
+#
+    r[3]=i[2]*1./3.
+    do i[6]=i[10],i[11]
+      ins SI  ,i[6]+r[3],i[7],0.0,(i[2]+1)*0.1
+    enddo
+#
+  enddo
+#
+  plot
+    sel all
+    ext all
+    uvw 0,0,1
+    thick 1.0
+    outfile $$.plot
+    run
+  exit
+#
+  if ($3.eq.1) then
+    four
+    xray
+    exit
+  else
+    four
+    neut
+    exit
+  endif
+  four
+    ll -0.5,-0.5, 0.0
+    lr  4.5,-0.5, 0.0
+    ul -0.5, 4.5, 0.0
+    no 251
+    na 251
+    run
+  exit
+#
+  output
+    value inte
+    form stand
+    outf $$.inte
+    run
+  exit
+#
+#
+  system rm -f teach_stack_$1_$2_$3_$4.err
+#
+endif
+#
+exit
+EOF
+#
+##################################################################
+# Here we start KUPLOT
+##################################################################
+#
+if (-f teach_stack_$1_$2_$3_$4.err) then
+  rm -f $$.*
+  exit 1
+endif
+#
+kuplot << EOF > /dev/null
+set prompt,redirect
+set error,exit
+fopen 1,teach_stack_$1_$2_$3_$4.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+rese
+#
+load cr,$$.plot
+load ni,$$.inte
+glat 2,3
+#
+buf 0.06
+lwid 0,0.1
+font just,center
+font typ,1,1
+font typ,2,1
+font typ,3,1
+font typ,4,1
+font typ,5,1
+font typ,6,1
+#
+nfra 2
+sfra 1,0.0,0.0,0.5,1.0
+sfra 2,0.5,0.0,1.0,1.0
+#
+afra 1
+kfra 1,1
+ccal add,wx,1,26.0
+fset 2
+mark 10,10
+grid off
+aver 1
+skal 0.,51.,0.,51.
+achx x [l.u.]
+achy y [l.u.]
+tit1 Disordered structure
+tit2 ALPHA=$1 - BETA=$2
+fnam off
+msiz 1,0.11
+#
+afra 2
+kfra 2,2
+skal
+mark 1,1
+aver 1
+achx h
+achy k
+achz Intensity
+if ($3.eq.1) then
+  tit1 Scattering: X-ray
+else
+  tit1 Scattering: Neutron
+endif
+tit2 Scale: 15% of maximum
+fnam off
+lcol 0,7
+grid off
+fset 2
+hlin 1,0.0,15,1,%
+hart 2,2
+cmap fire
+#
+save ps,teach_stack_$1_$2_$3_$4.ps
+size[3]=$4
+save pic,teach_stack_$1_$2_$3_$4.gif
+#
+  system rm -f teach_stack_$1_$2_$3_$4.err
+#
+exit
+EOF
+#
+##################################################################
+# Some cleaning up - only GIF output remains
+##################################################################
+#
+rm -f $$.*

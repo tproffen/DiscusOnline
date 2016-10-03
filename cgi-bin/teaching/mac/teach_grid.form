@@ -1,0 +1,31 @@
+# 1D crystal builder form
+# (c) Thomas Proffen, 2003
+
+title=2D crystal builder
+
+# Syntax:
+#   text=no,size,default,label
+#   radio=no,size,default,label
+#     label,value
+#   gsize=no
+#   submit
+
+text=1,5,2,# atoms in a
+text=2,5,3,# atoms in b
+
+HR
+text=3,5,1.0,Ratio length a/b
+text=4,5,90.0,Angle &gamma; (a&lt;b)
+
+HR
+text=5,5,45.0,Rotation angle
+text=6,5,0.0,Shift in x
+text=7,5,0.0,Shift in y
+
+HR
+radio=8,2,1,Radiation
+X-rays,1
+Neutrons,2
+
+HR
+submit

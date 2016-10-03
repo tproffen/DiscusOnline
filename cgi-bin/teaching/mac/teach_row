@@ -1,0 +1,215 @@
+#!/bin/csh
+##################################################################
+# This macro exectutes DISCUS and KUPLOT to create a row
+# of atoms and its Fourier transform via WWW interface.
+#
+# Version: 1.1
+# Author:  Th. Proffen  (tproffen@lanl.gov)
+#          R.B. Neder   (reinhard.neder@mail.uni-wuerzburg.de)
+##################################################################
+# Required parameters:
+#
+#    $1 : Number of atoms
+#    $2 : Distance between atoms
+#    $3 : Atom type
+#    $4 : Radiation
+#    $5 : Measure in reciprocal space
+#    $6 : Graphics size
+#
+##################################################################
+# Here we start DISCUS
+##################################################################
+#
+discus << EOF > /tmp/discus$$.log
+set prompt,redirect
+#set error,exit
+fopen 1,teach_row_$1_$2_$3_$4_$5_$6.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+if ($1.lt.1 .or. $1.gt.500) then
+  fopen 1,teach_row_$1_$2_$3_$4_$5_$6.err
+  fput 1,'<h2>Invalid number of atoms specified !</h2>'
+  fput 1,'Allowed range: 1 to 500'
+  fclose 1
+elseif ($3.eq.1 .and. $4.eq.2) then
+  fopen 1,teach_row_$1_$2_$3_$4_$5_$6.err
+  fput 1,'<h2>Atom type ELECTRON not allowed for neutron scattering !</h2>'
+  fclose 1
+else
+  read
+  free  6.28, 6.28, 6.28, 90.0, 90.0, 90.0
+#
+# The lattice parameter of 2PI allows to use q=2 Pi h in output ;-)
+#
+  i[2] = $1
+  r[1] = $2/6.28
+#
+  do i[1]=0,i[2]-1
+    if ($3.eq.1) then
+      insert E1-,i[1]*r[1]+0.001,0.0,0.0,0.1
+    elseif ($3.eq.2) then
+      insert SI, i[1]*r[1]+0.001,0.0,0.0,0.1
+    elseif ($3.eq.3) then
+      insert PB, i[1]*r[1]+0.001,0.0,0.0,0.1
+    endif
+  enddo
+#
+  plot
+  ext all
+  sel all
+  prog kuplot
+  outf $$.plot
+  exit
+#
+  if ($3.eq.1) then
+    plot
+    set E1-,3,3,0.25
+    exit
+  elseif ($3.eq.2) then
+    plot
+    set SI,3,3,1.0
+    exit
+  elseif ($3.eq.3) then
+    plot
+    set PB,3,1,2.0
+    exit
+  endif
+#
+  plot
+  thick 1.0
+  run
+  exit
+#
+  if ($4.eq.1) then
+    four
+    xray
+    exit
+  elseif ($4.eq.2) then
+    four
+    neut
+    exit
+  endif
+#
+  four
+  ll  -3.0*3.14,  0.0, 0.0
+  lr   3.0*3.14,  0.0, 0.0
+  na 5001
+  no 1
+  run
+  exit
+#
+  output
+  form stan
+  outf $$.inte
+  value inte
+  run
+  exit
+#
+  system rm -f teach_row_$1_$2_$3_$4_$5_$6.err
+#
+endif
+exit
+EOF
+#
+##################################################################
+# Here we start KUPLOT
+##################################################################
+#
+if (-f teach_row_$1_$2_$3_$4_$5_$6.err) then
+  rm -f $$.*
+  exit 1
+endif
+#
+kuplot << EOF > /tmp/kuplot$$.log
+set prompt,redirect
+#set error,exit
+fopen 1,teach_row_$1_$2_$3_$4_$5_$6.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+rese
+#
+load cr,$$.plot
+load xy,$$.inte
+#
+# Getting back to A
+#
+ccal mul,wx,1,6.28
+#
+lwid 0,0.1
+font just,center
+font typ,1,1
+font typ,2,1
+font typ,3,1
+font typ,4,1
+font typ,5,1
+font typ,6,1
+#
+nfra 2
+sfra 1,0.0,0.7,1.0,1.0
+sfra 2,0.0,0.0,1.0,0.7
+#
+afra 1
+kfra 1,1
+fset 2
+if($2.eq.0) then
+  skal -1,1,-0.2,0.2
+else
+  skal xmin[1]-0.5*abs($2),xmax[1]+0.5*abs($2),-0.2,0.2
+endif
+msiz 1,0.5
+achx x (\A)
+achy OFF
+if ($3.eq.1) then
+  tit2 Row of $1 electron(s); $2 \A apart
+elseif ($3.eq.2) then
+  tit2 Row of $1 silicon atom(s); $2 \A apart
+else
+  tit2 Row of $1 lead atom(s); $2 \A apart
+endif
+fnam off
+#
+afra 2
+kfra 2,2
+if( $5.eq.1) then
+  r[1] = 1./6.28
+else
+  r[1] = 1.0
+endif
+ccal mul,wx,2,r[1]
+#
+skal xmin[2],xmax[2],0.0,1.1*ymax[2]
+if( $5.eq.1) then
+  mark 0.5,ymax[2]/3.0
+  achx h\dx\u (\A\u-1\d)
+else
+  mark 5.0,ymax[2]/3.0
+  achx q\dx\u (= 2\gp*\A\u-1\d)
+endif
+achy Intensity
+if ($4.eq.1) then
+  tit2 X-ray scattering
+else
+  tit2 Neutron scattering pattern
+endif
+fnam off
+#
+save ps,teach_row_$1_$2_$3_$4_$5_$6.ps
+size[3]=$6
+save pic,teach_row_$1_$2_$3_$4_$5_$6.gif
+#
+system rm -f teach_row_$1_$2_$3_$4_$5_$6.err
+#
+exit
+EOF
+#
+##################################################################
+# Some cleaning up - only GIF output remains
+##################################################################
+#
+rm -f $$.*

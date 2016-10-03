@@ -1,0 +1,125 @@
+<html>
+<head>
+<title>Interactive guide to diffraction ..</title>
+</head> 
+<body bgcolor="#FFFFFF" text="#0A3E00"
+      link="#1A4D73" vlink="#1E5986" alink="#CC0005"
+      topmargin="0" leftmargin="0" rightmargin="0"
+      marginwidth="0" marginheight="0">
+
+<table border=0 cellpadding=10 width=100% height="100%" bgcolor="#BDC6DE">
+
+<tr>
+  <td colspan=2 align="center" height="5%" bgcolor="#BDC6DE">
+    <b>Interactive Tutorial about Diffraction</b><br>
+    <b><font color="#000099" size="+2">Structure solving: 
+       Answers part I</font></b>
+  </td>
+</tr>
+
+<tr>
+ <td valign="top" align="right" bgcolor="#CDD6EE" width="15%">
+ 
+    <center><img src="Pics/diffuse.gif" align="center" vspace="15"></center><p>
+    <p>
+    <font color="#000099"><b>Structure solution</b></font><br>
+    <a href="inv_a.html">Tasks part 1</a><br>
+    <i>Answers part 1</i><br>
+    <a href="inv_c.html">Tasks part 2</a><br>
+    <a href="inv_d.html">Answers part 2</a><br>
+    <a href="inv_e.html">Tasks part 3</a><br>
+    <a href="inv_f.html">Answers part 3</a><p>
+    <font color="#000099"><b>Goto</b></font><br>
+    <a href="teaching.html">Contents</a><br>
+ </td>
+
+ <td bgcolor="#FFFFFF" valign="top">
+  Lets reproduce the intensity distributions:
+  <p>
+  <center>
+    <a href="inv1.html">
+    <img src="Pics/inv1s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="inv2.html">
+    <img src="Pics/inv2s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  <p>
+  <font color="#000099">
+  Why are the two diffraction patterns different?</font><p>
+  <ul>
+     <li>The left image was calculated for X-ray diffraction. Note
+         that the intensities drop with increasing distance from
+         the center of reciprocal space.</li>
+     <li>The right image was calculated for neutron diffraction.
+         Atoms can be treated like point scatterers in this case.
+         Accordingly the intensities do not decrease with increasing
+         distance from the origin of reciprocal space.</li>
+     <li>The atomic form factors increase with the number of
+         electrons, while the neutron scattering length do not
+         show this systematic distribution. Accordingly the same
+         reflection can have totally different intensity as can be
+         seen in the diffraction patterns.</li>
+  </ul>
+  <p>
+  <font color="#000099">
+  What information can you extract from the diffraction patterns?</font><p>
+  <ul>
+     <li>By applying Bragg's law you can calculate the d-spacing for the
+         reflections.
+        <center>
+          <img src="Pics/invform1.gif" vspace=20 hspace=10 border=0>
+        </center>
+        There are many different ways to get the lattice constants from
+        a list of d-spacings. Since the diffraction pattern in these
+        examples are undistorted representations of reciprocal space,
+        the lattice constants can be obtained directly from the patterns.
+        The two base vectors of reciprocal space are normal to each
+        other, of equal length. Base vector <b>a</b> is horizontal,
+        base vector <b>b</b> is vertical. The lattice constants are:
+        a=b=5.0 A, alpha=90.</li>
+    <li>The second information available directly from the diffraction
+        pattern is their symmetry. Both diffraction patterns show
+        symmetry mm4. There are no systematic extinctions, thus
+        the plane group is <b>pmm4</b>. Note that the X-ray pattern
+        shows a pseudo c-centering. All reflections hk, h+k=2n+1 are
+        very weak. </li>
+  </ul>
+  <p>
+  <font color="#000099">
+  What, if any, information do you need beyond the diffraction patterns
+  to solve the crystal structure?</font><p>
+  <ul>
+     <li>First we need the chemistry of the substance: Zr Ti O<sub>4</sub></li>
+     <li>In order to calculate the number of molecules per unit we should
+         measure the density of the material.</li>
+     <li>Physical properties such as the piezoelectric effect will give
+         insight into the presence of a center of symmetry.</li>
+  </ul>
+  <p>
+  <font color="#000099">
+  What type of calculations can you perform to solve the structure?</font><p>
+  <ul>
+      <li>Direct methods provide the most powerful and usually easiest
+          way to solve the structure. They are, however, very much
+          black box methods, and beyond the scope of this tutorial.</li>
+      <li>A Patterson synthesis can be calculated directly from the
+          intensities:
+          <center>
+            <img src="Pics/invform2.gif" vspace=20 hspace=10 border=0>
+          </CENTER> </LI>
+  </ul>
+  <p>
+  Now you are ready for the next step towards a solution of the given
+  structure.
+
+  </td>
+</tr>
+
+<tr>
+  <td align="right" colspan="2" height="5%" bgcolor="#BDC6DE">
+  &copy <a href="mailto:tproffen@lanl.gov">Th. Proffen</a> and <a
+  href="mailto:reinhard.neder@mail.uni-wuerzburg.de">R.B. Neder</a>,
+  2003
+  </td>
+</tr></table>
+</body>
+</html> 

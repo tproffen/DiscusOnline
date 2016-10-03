@@ -1,0 +1,273 @@
+#!/bin/csh
+##################################################################
+# This macro exectutes DISCUS and KUPLOT to create a single
+# atom and its corresponding structure factor in the 
+# complex plane
+#
+# Version: 1.0
+# Author:  Th. Proffen  (tproffen@lanl.gov)
+#          R.B. Neder   (reinhard.neder@mail.uni-wuerzburg.de)
+##################################################################
+# Required parameters:
+#
+#    $1 : h
+#    $2 : k
+#    $3 : Amplitude    h
+#    $4 : Phase angle  h
+#    $5 : Amplitude   2h
+#    $6 : Phase angle 2h
+#    $7 : Graphics size
+#
+##################################################################
+# Here we start DISCUS
+##################################################################
+#
+discus << EOF > /dev/null
+set prompt,redirect                                                             #
+set error,exit
+fopen 1,teach_rho_2h_$1_$2_$3_$4_$5_$6_$7.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+if(abs($1).gt.10. or. abs($2).gt.10.) then
+  fopen 1,teach_rho_2h_$1_$2_$3_$4_$5_$6_$7.err
+  fput  1,'H;K have been limited to +-10'
+  fput  1,'since higher indices would render'
+  fput  1,'the image too crowded'
+  fclose 1
+elseif($3.lt.0.0 .or. $5.lt.0.0) then
+  fopen 1,teach_rho_2h_$1_$2_$3_$4_$5_$6_$7.err
+  fput  1,'Amplitude must be larger than zero'
+  fclose 1
+elseif($3.gt.1000.0 .or. $5.gt.1000.0) then
+  fopen 1,teach_rho_2h_$1_$2_$3_$4_$5_$6_$7.err
+  fput  1,'The amplitude must be less than the'
+  fput  1,'amplitude of the 0;0 reflection (1000)'
+  fclose 1
+else
+set prompt,on
+  read
+  free  10.00,  10.00,  10.00,  90.00,  90.00,  90.00
+#
+  fopen 1,$$.int
+  fformat 1,i4
+  fformat 2,i4
+  fformat 3,i4
+  fformat 4,f10.2
+  fformat 5,f10.2
+  fformat 6,f7.2
+  if($4.eq.1) then 
+    r[1] = 0.0
+  else
+    r[1] = 180.0
+  endif
+  if($6.eq.1) then 
+    r[2] = 0.0
+  else
+    r[2] = 180.0
+  endif
+  fput  1,    0, 0, 0,  1000.00, 1000.00,  0.00
+  fput  1,   $1,   $2, 0, $3,$3,r[1]
+  fput  1, 2*$1, 2*$2, 0, $5,$5,r[2]
+  fclose 1
+#
+inverse
+  file a,$$.int
+  type a,fcalc
+  form shelxl
+  rholl -0.5,-0.5,0.0
+  rholr  1.5,-0.5,0.0
+  rhoul -0.5, 1.5,0.0
+  rhona  201
+  rhono  201
+  rhoabs x
+  rhoord y
+  set accu,init
+  run
+exit
+#
+output
+  outfile $$.rho
+  form    stan
+  value   real
+  run
+exit
+#
+inverse
+  rholl -0.5, 0.0,0.0
+  rholr  1.5, 0.0,0.0
+  rhoul -0.5, 0.0,0.0
+  rhona 201
+  rhono  1
+  rhoabs x
+  rhoord y
+  run
+exit
+#
+output
+  outfile $$.rhox
+  run
+exit
+#
+inverse
+  rholl 0.0, -0.5, 0.0
+  rholr 0.0,  1.5, 0.0
+  rhoul 0.0, -0.5, 0.0
+  rhona 201
+  rhono  1
+  rhoabs y
+  rhoord x
+  run
+exit
+#
+output
+  outfile $$.rhoy
+  run
+exit
+endif
+#
+  system rm -f teach_rho_2h_$1_$2_$3_$4_$5_$6_$7.err
+#
+exit
+EOF
+#
+##################################################################
+# Here we start KUPLOT
+##################################################################
+#
+if (-f teach_rho_2h_$1_$2_$3_$4_$5_$6_$7.err) then
+  rm -f $$.*
+  exit 1
+endif
+#
+kuplot << EOF > /dev/null
+set prompt,redirect
+set error,exit
+fopen 1,teach_rho_2h_$1_$2_$3_$4_$5_$6_$7.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+rese
+#
+load ni,$$.rho
+load xy,$$.rhox
+load yx,$$.rhoy
+#
+r[11] = max(ymax[2],xmax[3]) * 1.1
+if(r[11].eq.0.0) then
+  r[11] = 1.1
+endif
+i[11] = nint(ln(r[11])/ln(10.)-0.5)
+ccal mul,wy,2,10**(-1*i[11])
+ccal mul,wx,3,10**(-1*i[11])
+r[11] = max(ymax[2],xmax[3]) * 1.1
+if(r[11].eq.0.0) then
+  r[11] = 1.1
+endif
+r[12] = -1.*r[11]
+r[13] = max(1,int(r[11]/2.))
+#
+fopen 1,$$.txb
+fformat 2,i4
+fformat 3,i4
+fput 1,'H K   :',$1,$2
+fput 1
+fformat 2,f9.2
+fput 1,'|F(h,k)|   :',$3
+if($4.eq.1) then
+  fput 1,'Phase :   0 deg'
+elseif($4.eq.2) then
+  fput 1,'Phase : 180 deg'
+endif
+fput 1
+fput 1,'|F(2h,2k)|   :',$5
+if($6.eq.1) then
+  fput 1,'Phase :   0 deg'
+elseif($6.eq.2) then
+  fput 1,'Phase : 180 deg'
+endif
+fput 1
+fput 1,'Rho(max):',zmax[1]
+fput 1,'Rho(min):',zmin[1]
+fclose 1
+#
+nfra 4
+kfra 1,1
+kfra 2,2
+kfra 3,3
+sfra 1, 0.310,0.350, 0.960,1.000
+sfra 2, 0.365,0.000, 0.905,0.430
+sfra 3, 0.000,0.355, 0.410,1.000
+sfra 4, 0.100,0.000, 0.450,0.350
+#
+afra 1
+#
+skal 
+mark 0.25,0.25
+aver 1
+r[31] = zmin[1]
+r[32] = zmax[1]
+r[21] = r[31]/10.
+r[22] = r[32]/10.
+achx x
+achy y
+achz Intensity
+hlin 1, -1.*zmax[1],r[22],20
+hlin 2, r[21],r[21],10
+hlin 3, r[22],r[22],10
+hcol 1,2,1
+hcol 1,3,3
+hart 1,2
+cmap fire
+#cmap invert
+fnam off
+tit1 Electron density
+tit2 white/yellow: positive; black/red: negative
+#
+afra 2
+#
+skal -0.5,1.5, r[12],r[11]
+#aver
+mark 0.25,r[13]
+lcol 2,3
+lwidt 2,1
+achx "  x"
+achy "rho   [10\u%4d\d]",i[11]
+tit2 cut || x at y=0
+fnam off
+#
+afra 3
+#
+skal r[12],r[11], -0.5,1.5
+#aver
+mark r[13],0.25
+lcol 3,3
+lwidt 3,1
+achx "rho  [10\u%4d\d]",i[11]
+achy y
+tit2 cut || y at x=0
+fnam off
+#
+afra 4
+kfra 4,$$.txb
+font color,5,3
+font size,5,14
+font just,left
+#
+save ps,teach_rho_2h_$1_$2_$3_$4_$5_$6_$7.ps
+size[3]=$7
+save pic,teach_rho_2h_$1_$2_$3_$4_$5_$6_$7.gif
+#
+  system rm -f teach_rho_2h_$1_$2_$3_$4_$5_$6_$7.err
+#
+exit
+EOF
+#
+##################################################################
+# Some cleaning up - only GIF output remains
+##################################################################              #
+rm -f $$.*

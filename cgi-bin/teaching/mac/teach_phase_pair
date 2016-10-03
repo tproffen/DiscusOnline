@@ -1,0 +1,221 @@
+#!/bin/csh
+##################################################################
+# This macro exectutes DISCUS and KUPLOT to create a pair of atoms
+# on the x-axis and its Fourier transform via WWW interface.
+# The effect of the shift along x is displayed.
+#
+# Version: 1.0
+# Author:  Th. Proffen  (tproffen@lanl.gov)
+#          R.B. Neder   (reinhard.neder@mail.uni-wuerzburg.de)
+##################################################################
+# Required parameters:
+#
+#    $1 : Name of first atom
+#    $2 : Position of first atom
+#    $3 : Name of first atom
+#    $4 : Position of first atom
+#    $5 : Radiation
+#    $6 : Output size
+#
+##################################################################
+# Here we start DISCUS
+##################################################################
+#
+discus << EOF >/dev/null
+set prompt,redirect
+set error,exit
+fopen 1,teach_phase_pair_$1_$2_$3_$4_$5_$6.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+#
+  read
+  free  1.00, 1.00, 1.00, 90.0, 90.0, 90.0
+#
+  insert $1, $2,0.0,0.0, 0.1
+  insert $3, $4,0.0,0.0, 0.1
+#
+  plot
+  ext all
+  ext x,cdim[1,1]-0.1,cdim[1,2]+0.1
+  ext y,-0.1, 0.1
+  ext z, 0.0, 0.0
+  sel all
+  thick 1.0
+  outf $$.plot
+  exit
+#
+  if (n[2].eq.1) then
+    plot
+    set 1,3,3,1.00
+    exit
+  elseif (n[2].eq.2) then
+    plot
+    set 1,3,3,1.00
+    set 2,3,1,1.00
+    exit
+  endif
+#
+  plot
+  run
+  exit
+#
+  if ($5.eq.1) then
+    four
+    xray
+    exit
+  elseif ($5.eq.2) then
+    four
+    neut
+    exit
+  endif
+#
+  four
+  ll  -2.0,  0.0, 0.0
+  lr   2.0,  0.0, 0.0
+  na 1001
+  no 1
+  run
+  exit
+#
+  output
+  form stan
+  outf $$.inte
+  value inte
+  run
+  outf $$.real
+  value real
+  run
+  outf $$.imag
+  value imag
+  run
+  outf $$.phas
+  value phas
+  run
+  exit
+#
+  system rm -f teach_phase_pair_$1_$2_$3_$4_$5_$6.err
+#
+exit
+EOF
+#
+##################################################################
+# Here we start KUPLOT
+##################################################################
+#
+if (-f teach_phase_pair_$1_$2_$3_$4_$5_$6.err) then
+  rm -f $$.*
+  exit 1
+endif
+#
+kuplot << EOF > /dev/null
+set prompt,redirect
+set error,exit
+fopen 1,teach_phase_pair_$1_$2_$3_$4_$5_$6.err
+fput 1,'<h2>An error occured during the plotting.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+rese
+#
+  load cr,$$.plot
+  load xy,$$.inte
+  load xy,$$.real
+  load xy,$$.imag
+  load xy,$$.phas
+#
+#
+  lwid 0,0.1
+  font just,center
+  font typ,1,1
+  font typ,2,1
+  font typ,3,1
+  font typ,4,1
+  font typ,5,1
+  font typ,6,1
+#
+  nfra 4
+  sfra 1,0.00,0.7,1.00,1.0
+  sfra 2,0.00,0.0,0.40,0.7
+  sfra 3,0.30,0.0,0.70,0.7
+  sfra 4,0.60,0.0,1.00,0.7
+#
+afra 1
+kfra 1,1
+fset 2
+skal xmin[1]-0.5,xmax[1]+0.5,-0.2,0.2
+msiz 1,0.5
+achx x (\A)
+achy OFF
+tit2 Position of the atoms
+fnam off
+#
+afra 2
+kfra 2,2
+skal xmin[2],xmax[2],0.0,1.1*ymax[2]
+mark 1.0,ymax[2]/3.0
+fset 3
+achx h\dx\u (\A\u-1\d)
+achy Intensity
+tit2 Intensity
+fnam off
+#
+#
+afra 3
+kfra 3,3,4
+r[10] = (max(ymax[3],ymax[4])-min(ymin[3],ymin[4]))*0.05
+r[11] = min(ymin[3],ymin[4])-r[10]
+r[12] = max(ymax[3],ymax[4])+r[10]
+skal xmin[3],xmax[3],r[11],r[12]
+mark 1.0,r[10]*8.
+fset 3
+lcol 3,3
+lcol 4,1
+if (ymax[3].eq.0 .and. ymin[3].eq.0) then
+  lwidth 3,0.6
+endif
+if (ymax[4].eq.0 .and. ymin[4].eq.0) then
+echo increasing width to 0.6
+  lwidth 4,0.6
+endif
+achx h\dx\u (\A\u-1\d)
+achy real(blue) / imaginary(red)
+if ($5.eq.1) then
+  tit1 X-ray scattering
+else
+  tit1 Neutron scattering pattern
+endif
+tit2 Real /imaginary parts
+fnam off
+#
+afra 4
+kfra 4,5
+skal xmin[4],xmax[4],-190,190
+lcol 5,2
+if (ymax[5].eq.0 .and. ymin[5].eq.0) then
+  lwidth 5,0.6
+endif
+mark 1.0,90.0
+fset 3
+tit2 Phase angle
+achx h\dx\u (\A\u-1\d)
+achy phase angle
+fnam off
+#
+save ps,teach_phase_pair_$1_$2_$3_$4_$5_$6.ps
+size[3]=$6
+save pic,teach_phase_pair_$1_$2_$3_$4_$5_$6.gif
+#
+  system rm -f teach_phase_pair_$1_$2_$3_$4_$5_$6.err
+#
+exit
+EOF
+#
+##################################################################
+# Some cleaning up - only GIF output remains
+##################################################################
+#
+rm -f $$.*

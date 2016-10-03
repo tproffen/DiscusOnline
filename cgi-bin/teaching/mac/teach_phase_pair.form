@@ -1,0 +1,25 @@
+# (c) Thomas Proffen, 2003
+
+title=Phase angles
+
+# Syntax:
+#   text=no,size,default,label
+#   radio=no,size,default,label
+#     label,value
+#   gsize=no
+#   submit
+
+text=1,5,Si,Name atom #1
+text=2,5,-1.5,Position atom #1
+
+HR
+text=3,5,Si,Name atom #2
+text=4,5, 1.5,Position atom #2
+
+HR
+radio=5,2,1,Radiation
+X-rays,1
+Neutrons,2
+
+HR
+submit

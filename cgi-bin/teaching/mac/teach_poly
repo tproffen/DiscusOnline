@@ -1,0 +1,176 @@
+#!/bin/csh
+##################################################################
+# This macro exectutes DISCUS and KUPLOT to create a polygon
+# of atoms and its Fourier transform via WWW interface.
+#
+# Version: 1.0
+# Author:  Th. Proffen  (tproffen@lanl.gov)
+#          R.B. Neder   (reinhard.neder@mail.uni-wuerzburg.de)
+##################################################################
+# Required parameters:
+#
+#    $1 : Number of atoms
+#    $2 : Radiation to be used
+#    $3 : Graphics size
+#
+##################################################################  
+# Here we start DISCUS
+##################################################################
+#
+discus << EOF > /dev/null
+set prompt,redirect
+set error,exit
+fopen 1,teach_poly_$1_$2_$3.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+if ($1.lt.1 .or. $1.gt.50) then
+  fopen 1,teach_poly_$1_$2_$3.err
+  fput 1,'<h2>Invalid number of atoms specified !</h2>'
+  fput 1,'Allowed range: 1 to 50'
+  fclose 1
+else
+  read
+  free  1.0, 1.0, 1.0, 90.0, 90.0, 90.0
+#
+  r[1] = 1.400
+  r[2] = 0.000
+  r[3] = 0.000
+#
+  r[10] = 360./$1
+  i[2]  = $1 - 1
+#
+  do i[1]=0,i[2]
+    r[4] =  cosd(r[10]*i[1])*r[1] - sind(r[10]*i[1])*r[2] +  0.0*r[3]
+    r[5] =  sind(r[10]*i[1])*r[1] + cosd(r[10]*i[1])*r[2] +  0.0*r[3]
+    r[6] =               0.0*r[1] +              0.0*r[2] +  1.0*r[3]
+    insert pb, r[4], r[5], r[6], 0.1
+  enddo
+#
+  plot
+  ext all
+  sel pb
+  set pb,3,3,2.0
+  outf $$.plot
+  thick 1.0
+  run
+  exit
+#
+  if ($2.eq.1) then
+    four 
+    xray
+    exit
+  else
+    four
+    neut
+    exit
+  endif
+#
+  four
+  ll  -2.5, -2.5, 0.0
+  lr   2.5, -2.5, 0.0
+  ul  -2.5,  2.5, 0.0
+  na 251
+  no 251
+  run
+  exit
+#
+  output
+  form stan
+  outf $$.inte
+  value inte
+  run
+  exit
+#
+  system rm -f teach_poly_$1_$2_$3.err
+#
+endif
+exit
+EOF
+#
+##################################################################
+# Here we start KUPLOT
+##################################################################
+#
+if (-f teach_poly_$1_$2_$3.err) then
+  rm -f $$.*
+  exit 1
+endif
+#
+kuplot << EOF > /dev/null
+set prompt,redirect
+set error,exit
+fopen 1,teach_poly_$1_$2_$3.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+rese
+#
+load cr,$$.plot
+load ni,$$.inte
+#
+buf 0.06
+lwid 0,0.1
+font just,center
+font typ,1,1
+font typ,2,1
+font typ,3,1
+font typ,4,1
+font typ,5,1
+font typ,6,1
+#
+nfra 2
+#
+afra 1
+kfra 1,1
+skal -2,2,-2,2
+mark 1,1
+aver 1
+achx x [\A]
+achy y [\A]
+tit2 Polygon of $1 atom(s)
+fnam off
+#
+afra 2
+kfra 2,2
+skal
+mark 1,1
+aver 1
+achx h [\A\u-1\d]
+achy k [\A\u-1\d]
+achz Intensity
+if ($2.eq.1) then
+  tit2 X-ray scattering
+else
+  tit2 Neutron scattering
+endif
+fnam off
+mean 2
+r[50]=res[3]-3.0*res[6]
+if (r[50].lt.0.0) then
+  r[50]=0.0
+endif
+r[51]=res[3]+3.0*res[6]-r[50]
+hlin 1,r[50],r[51],1
+hart 2,2
+cmap fire
+#
+save ps,teach_poly_$1_$2_$3.ps
+#
+size[3]=$3
+save pic,teach_poly_$1_$2_$3.gif
+#
+  system rm -f teach_poly_$1_$2_$3.err
+#
+exit
+EOF
+#
+##################################################################
+# Some cleaning up - only GIF output remains
+##################################################################
+#
+rm -f $$.*

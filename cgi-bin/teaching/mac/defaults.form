@@ -1,0 +1,10 @@
+# DISCUS simulator color definitions
+
+page_bg=FFFFFF
+form_bg=F5F5FF
+tab_bg=BDC6DE
+head_bg=BDC6DE
+head_fg=000099
+
+gsize=0.75
+fside=right

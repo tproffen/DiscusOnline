@@ -1,0 +1,206 @@
+#!/bin/csh
+##################################################################
+# This macro exectutes DISCUS and KUPLOT to create the 
+# diffraction pattern of a single atom vie WWW interface.
+#
+# Version: 1.0
+# Author:  Th. Proffen  (tproffen@lanl.gov)
+#          R.B. Neder   (reinhard.neder@mail.uni-wuerzburg.de)
+##################################################################
+# Required parameters:
+#
+#    $1 : Atom A
+#    $2 : Atom B
+#    $3 : Radiation
+#    $4 :Measure in reciprocal space
+#    $5 : Graphics size
+#
+##################################################################  
+# Here we start DISCUS
+##################################################################
+#
+discus << EOF > /dev/null
+set prompt,redirect
+set error,exit
+fopen 1,teach_x2_$1_$2_$3_$4_$5.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+#
+read
+free  6.28, 6.28, 6.28, 90.0, 90.0, 90.0
+#
+# The lattice parameter of 2PI allows to use q=2 Pi h in output ;-)
+#
+r[1] = 1./6.28
+#
+insert $1, 0.000,0.0,0.0, 1.000
+#
+#
+if ($3.eq.1) then
+  four
+  xray
+  exit
+elseif ($3.eq.2) then
+  four
+  neut
+  exit
+endif
+#
+four
+ll  -1.0*6.28,  0.0, 0.0
+lr   1.0*6.28,  0.0, 0.0
+na 1001
+no 1
+run
+exit
+#
+output
+form stan
+outf $$.atom1
+value inte
+run
+exit
+#
+read
+free  6.28, 6.28, 6.28, 90.0, 90.0, 90.0
+#
+# The lattice parameter of 2PI allows to use q=2 Pi h in output ;-)
+#
+r[1] = 1./6.28
+#
+insert $2, 0.000,0.0,0.0, 1.000
+#
+four
+run
+exit
+#
+output
+form stan
+outf $$.atom2
+run
+exit
+#
+  system rm -f teach_x2_$1_$2_$3_$4_$5.err
+#
+exit
+EOF
+#
+##################################################################
+# Here we start KUPLOT
+##################################################################
+#
+if (-f teach_x2_$1_$2_$3_$4_$5.err) then
+  rm -f $$.*
+  exit 1
+endif
+#
+kuplot << EOF > /dev/null
+set prompt,redirect
+set error,exit
+fopen 1,teach_x2_$1_$2_$3_$4_$5.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+rese
+#
+load xy,$$.atom1
+load xy,$$.atom2
+load xy,$$.atom1
+load xy,$$.atom2
+#
+lwid 0,0.1
+font just,center
+font typ,1,1
+font typ,2,1
+font typ,3,1
+font typ,4,1
+font typ,5,1
+font typ,6,1
+#
+if( $4.eq.1) then
+  r[1] = 1./6.28
+else
+  r[1] = 1.0
+endif
+ccal mul,wx,1,r[1]
+ccal mul,wx,2,r[1]
+ccal mul,wx,3,r[1]
+ccal mul,wx,4,r[1]
+#
+if(ymin[1].ne.ymax[1] .or. ymin[2].ne.ymax[2]) then
+  nfra 2
+  sfra 1,0.0 ,0.0, 0.55,1.0
+  sfra 2,0.45,0.0, 1.0 ,1.0
+else
+  nfra 1
+  sfra 1,0.0 ,0.0, 0.55,1.0
+endif
+#
+afra 1
+kfra 1,1,2
+#
+r[0]=max(ymax[1],ymax[2])
+#
+skal xmin[2],xmax[2],0.0,1.1*r[0]
+if( $4.eq.1) then
+  mark 0.5,r[0]/3.0
+  achx h\dx\u (\A\u-1\d)
+else
+  mark 5.0,r[0]/3.0
+  achx q\dx\u (\A\u-1\d)
+endif
+achy Intensity
+if ($3.eq.1) then
+  tit2 X-ray scattering
+else
+  tit2 Neutron scattering pattern
+endif
+sleg 1,$1
+sleg 2,$2
+lcol 1,1
+lcol 2,3
+fnam off
+#
+if(ymin[1].ne.ymax[1] .or. ymin[2].ne.ymax[2]) then
+  afra 2
+  kfra 2,3,4
+  skal xmin[3],xmax[3],0.9*ymin[3],1.1*ymax[3]
+if( $4.eq.1) then
+  mark 0.5,ymax[3]/3.0
+  achx h\dx\u (\A\u-1\d)
+else
+  mark 5.0,ymax[3]/3.0
+  achx q\dx\u (\A\u-1\d)
+endif
+  ccal mul,wy,4,ymax[3]/ymax[4]
+  achy Intensity
+  tit2 Scaled Intensities
+  sleg 3,$1
+  sleg 4,$2
+  fnam off
+  lcol 3,1
+  lcol 4,3
+#
+  size[3]=0.7
+#
+endif
+#
+save ps,teach_x2_$1_$2_$3_$4_$5.ps
+size[3]=$5
+save pic,teach_x2_$1_$2_$3_$4_$5.gif
+#
+  system rm -f teach_x2_$1_$2_$3_$4_$5.err
+#
+exit
+EOF
+#
+##################################################################
+# Some cleaning up - only GIF output remains
+##################################################################
+#
+rm -f $$.*

@@ -1,0 +1,27 @@
+#!/bin/tcsh
+####################################################################
+# This sets the FORM server in all teaching examples ..
+####################################################################
+
+if($#argv != 1) then
+  echo "-------------------------------------------------------------"
+  echo "Wrong number of arguments  !" 
+  echo "usage:  setserver <name>"
+  echo "        where <name> is the name of the local server"
+  echo "-------------------------------------------------------------"
+else
+  echo "-------------------------------------------------------------"
+  foreach file (i*_*.html)
+    set current=`grep window.open $file | awk -F/ '{print $3}' -`
+    if ($current != '') then
+      set line=`grep -n window.open $file | awk -F: '{print $1}' -`
+      echo "File: $file - Line $line"
+      echo "  Converting current server : $current "
+      echo "  to : $1 ..."
+      echo "-------------------------------------------------------------"
+      mv $file $file.orig
+      sed "$line s/$current/$1/" $file.orig > $file
+      rm -f $file.orig
+    endif
+  end
+endif

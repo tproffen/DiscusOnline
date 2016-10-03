@@ -1,0 +1,243 @@
+#!/bin/csh
+##################################################################
+# This macro exectutes DISCUS and KUPLOT to create a single
+# atom and its corresponding structure factor in the 
+# complex plane
+#
+# Version: 1.0
+# Author:  Th. Proffen  (tproffen@lanl.gov)
+#          R.B. Neder   (reinhard.neder@mail.uni-wuerzburg.de)
+##################################################################
+# Required parameters:
+#
+#    $1 : X-coordinates
+#    $2 : Y coordinate
+#    $3 : Atom type
+#    $4 : h
+#    $5 : k
+#    $6 : Radiation
+#    $7 : Graphics size
+#
+##################################################################
+# Here we start DISCUS
+##################################################################
+#
+#discus << EOF 
+discus << EOF > /dev/null
+set prompt,redirect                                                             #
+set error,exit
+fopen 1,teach_f_phase_$1_$2_$3_$4_$5_$6_$7.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+if ($3.eq.1 .and. $6.eq.2) then
+  fopen 1,teach_f_phase_$1_$2_$3_$4_$5_$6_$7.err
+  fput 1,'<h2>Atom type ELECTRON not allowed for neutron scattering !</h2>'
+  fclose 1
+else
+  read
+  free  10.00,  10.00,  10.00,  90.00,  90.00,  90.00
+#
+  if ($3.eq.1) then
+     insert e1-,$1,$2,0.,1.0
+  elseif ($3.eq.2) then
+     insert si ,$1,$2,0.,1.0
+  elseif ($3.eq.3) then
+     insert pb ,$1,$2,0.,1.0
+  endif
+#
+  fourier
+    ll $4, $5, 0.0
+    lr $4, $5, 0.0
+    ul $4, $5, 0.0
+    na 1
+    no 1
+  exit
+  if($6.eq.1) then
+    four
+      xray
+    exit
+  elseif($6.eq.2) then
+    four
+      neut
+    exit
+  endif
+  four
+    run
+  exit
+  out
+    outf $$.fcf
+    value ampl
+    form list9
+    run
+  exit
+#
+  plot
+    uvw 0,0,1
+    vect $1,$2,0.0
+    thick 100.
+    ext all
+    ext x,-1,1
+    ext y,-1,1
+    sel all
+    outf $$.plot
+    run
+  exit
+#
+  system rm -f teach_f_phase_$1_$2_$3_$4_$5_$6_$7.err
+#
+endif
+exit
+EOF
+#
+##################################################################
+# Here we start KUPLOT
+##################################################################
+#
+if (-f teach_f_phase_$1_$2_$3_$4_$5_$6_$7.err) then
+  rm -f $$.*
+  exit 1
+endif
+#
+#kuplot << EOF 
+kuplot << EOF > /dev/null
+set prompt,redirect
+set error,exit
+fopen 1,teach_f_phase_$1_$2_$3_$4_$5_$6_$7.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+rese
+#
+load cr,$$.plot
+alloc phase,2
+alloc refl,1
+alloc text,3
+#
+fopen 1,$$.fcf
+fget  1,i[1],i[2],i[3],r[1],r[2],r[3]
+fclose 1
+x[2,1] = 0.0
+y[2,1] = 0.0
+x[2,2] = r[1] * cosd(r[3])
+y[2,2] = r[1] * sind(r[3])
+r[10] = -1.2*r[1]
+r[11] =  1.2*r[1]
+x[3,1] = i[1]
+y[3,1] = i[2]
+r[12] = -1.2*(max(abs(i[1]),abs(i[2])))
+r[13] = -1.0*r[12]
+x[4,1] = 0.0
+y[4,1] = 0.0
+#
+font just,center
+font typ,1,1
+font typ,2,1
+font typ,3,1
+font typ,4,1
+font typ,5,1
+font typ,6,1
+font size,6,18
+#
+nfra 4
+kfra 1,1
+kfra 2,2
+kfra 3,3
+kfra 4,4
+sfra 1, 0.00, 0.45, 0.55, 1.00
+sfra 2, 0.45, 0.45, 1.00, 1.00
+sfra 3, 0.00, 0.00, 0.55, 0.55
+sfra 4, 0.45, 0.00, 1.00, 0.55
+#
+buff 0.1,0.1,0.15,0.05
+#
+afra 1
+buff 0.1,0.1,0.15,0.05
+aver 1
+skal -1.05,1.05, -1.05,1.05
+mark 0.5,0.5
+msiz 1,0.5
+achx x
+achy y
+fnam off
+if ($3.eq.1) then
+  tit2 Single electron
+elseif ($3.eq.2) then
+  tit2 Silicon atom
+else
+  tit2 Lead atom
+endif
+grid on
+#
+afra 2
+buff 0.1,0.1,0.15,0.05
+skal r[10],r[11],r[10],r[11]
+aver 1
+if(r[11].gt.1.4) then
+  mark max(1,nint((r[11]-r[10])/5.)),max(1,nint((r[11]-r[10])/5.))
+elseif(r[11].lt.1.0) then
+  mark 0.25,0.25
+else
+  mark 0.5,0.5
+endif
+lwidth 2,1.
+achx real part
+achy imaginary part
+tit2 Structure factor
+if ($6.eq.1) then
+  tit2 Structure factor; X-ray 
+else
+  tit2 Structure factor; Neutron
+endif
+fnam off
+grid on
+#
+afra 3
+buff 0.1,0.1,0.10,0.10
+skal r[12],r[13],r[12],r[13]
+aver 1
+mark 1,1
+fnam off
+grid on
+ltyp 3,0
+mtyp 3,3
+mcol 3,1
+msiz 3,0.5
+achx [H 0]
+achy [0 K]
+tit2 Reflection
+#
+afra 4
+buff 0.1,0.1,0.10,0.10
+skal 1,2,1,2
+mark 100,100
+sann 3,"x = %6.2f"           ,x[1,1],1.05,1.85,l
+sann 4,"y = %6.2f"           ,y[1,1],1.05,1.70,l
+sann 5,"H K = %3d  %3d",nint($4),nint($5),1.05,1.45,l
+sann 1,"|F|   = %7.2f"       ,r[1]  ,1.05,1.20,l
+sann 2,"Phase = %7.2f degree",r[3]  ,1.05,1.05,l
+achx
+achy
+tit1
+tit2
+fnam off
+grid off
+fset 0
+#
+save ps,teach_f_phase_$1_$2_$3_$4_$5_$6_$7.ps
+size[3]=$7
+save pic,teach_f_phase_$1_$2_$3_$4_$5_$6_$7.gif
+#
+  system rm -f teach_f_phase_$1_$2_$3_$4_$5_$6_$7.err
+#
+exit
+EOF
+#
+##################################################################
+# Some cleaning up - only GIF output remains
+##################################################################              #
+rm -f $$.*

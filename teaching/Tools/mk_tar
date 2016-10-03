@@ -1,0 +1,19 @@
+#!/bin/csh
+#-------------------------------------------------
+# This script creates the TEACHING TAR archive
+# Run it from Tools directory !
+#-------------------------------------------------
+
+cd ../../     
+
+tar -cvozf teaching/Distr/diffraction-tutorial.tar.gz \
+	teaching/*.html \
+	teaching/00INSTALL.txt \
+	teaching/Pics \
+	teaching/Tools \
+	teaching/Server \
+	teaching/Output/wait.gif \
+	teaching/Output/startup.gif \
+	teaching/Mac
+
+echo "Done .."

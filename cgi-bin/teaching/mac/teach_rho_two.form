@@ -1,0 +1,24 @@
+# (c) Thomas Proffen, 2003
+
+title=Electron density simulator
+
+# Syntax:
+#   text=no,size,default,label
+#   radio=no,size,default,label
+#     label,value
+#   gsize=no
+#   submit
+
+text=1,8,1.0,Bragg peak 1 <i>h</i>
+text=2,8,0.0,<i>k</i>
+text=3,8,1000.0,Amplitude
+text=4,8,0.0,Phase angle
+
+HR
+text=5,8,0.0,Bragg peak 2 <i>h</i>
+text=6,8,1.0,<i>k</i>
+text=7,8,1000.0,Amplitude
+text=8,8,0.0,Phase angle
+
+HR
+submit
