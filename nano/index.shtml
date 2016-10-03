@@ -1,0 +1,35 @@
+<!--#include file="header.html"-->
+
+<div class="main_story"><img alt="Group" src="Images/nano.jpg" align="left" width="180" />
+<h1>Nanoparticle Builder</h1>
+
+<p>Welcome to the interactive nanoparticle builder. Please note, that this
+	tool is still under development.</p>
+	
+<p>The tool uses the program <a href="http://discus.sourceforge.net">DISCUS</a> to
+	generate the nanoparticle structures and calculate the corresponding atomic
+	pair distribution function and powder diffraction pattern. The interactive
+	structure viewing is using the program <a href="http://jmol.sourceforge.net">JMOL</a>.
+	Structure and calculated functions can be downloaded from the results page.
+	Online plotting of the powder pattern and pair distribution function use the
+	<a href="http://ptolemy.eecs.berkeley.edu/java/ptplot/">Ptplot</a> package.
+  More builders for more complex nanoparticles are coming soon ..</p>
+
+<p>For questions and comments, contact one of the team member listed on the left.
+	Select a builder from the list on the left and get started ..</p>
+
+<h2>News</h2>
+<ul>
+	<li><b>Nov 4, 2011</b> - Initial version released. Enjoy the ellipsoid builder ..</li>
+</ul>
+</div>
+
+    <!-- OPEN secondary story column -->
+    <div id="sidebar">
+    <img src="Images/examples.jpg" width="250">
+    </div>
+
+    <!--CLOSES sidebar -->
+
+
+<!--#include file="footer.html"-->
