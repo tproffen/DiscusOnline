@@ -35,14 +35,14 @@ use POSIX qw(strftime);
 # MSU
 #------------------------------------------------------------------------
 
-$dishtml="/old/teaching/Output";
-$discgi ="/cgi-bin/discus2.cgi";
-$disdir ="/var/www/lighttpd/old/teaching/Output";
-$cgidir ="/var/www/lighttpd/cgi-bin/";
+$dishtml="/teaching/Output";
+$discgi ="/cgi-bin/teaching/discus2.cgi";
+$disdir ="/var/www/lighttpd/teaching/Output";
+$cgidir ="/var/www/lighttpd/cgi-bin/teaching/";
 $discus ="/usr/local/bin";
 $grfont ="/usr/local/pgplot/grfont.dat";
-$disurl ="http://www.pa.msu.edu/cmp/billinge-group/discus/discus.html";
-$kupurl ="http://www.pa.msu.edu/cmp/billinge-group/discus/kuplot.html";
+$disurl ="http://tproffen.github.io/DiffuseCode/";
+$kupurl ="http://tproffen.github.io/DiffuseCode/";
 $find   = "/usr/bin/find";
 
 #########################################################################
@@ -106,10 +106,9 @@ MAIN:
       }
       else {
         unless ($startup) {
-          $cmd = "cd $disdir; umask 022;
-  	          export PATH=/bin:/usr/bin:$discus; export PGPLOT_FONT=$grfont;
-                  $cgidir/mac/$input{'script'} $param";
-	  system "$cmd";
+          $cmd = "cd $disdir; umask 022; export PGPLOT_FONT=$grfont;
+                  $discus/discus_suite -macro $cgidir/mac/$input{'script'}.mac $param";
+	  system "$cmd > $disdir/$bname.log";
           $cret=strftime "%d. %b %Y at %I:%M %p", localtime();
           $cache ="<font size=\"-1\">\n";
           $cache.="Created: <i>$cret</i>\n";
@@ -188,7 +187,7 @@ sub buildForm {
 
   if (open(COL,"$cgidir/mac/defaults.form")) {
     while($line=<COL>) {
-      chop($line); chop($line);
+      chomp($line); chomp($line);
       if ($line=~/^page_bg=/) { $page_bg=$line; $page_bg=~s/page_bg=//; }
       if ($line=~/^form_bg=/) { $form_bg=$line; $form_bg=~s/form_bg=//; }
       if ($line=~/^tab_bg=/)  { $tab_bg=$line; $tab_bg=~s/tab_bg=//; }
@@ -208,7 +207,8 @@ sub buildForm {
     $fside="left";
   }
 
-  if (open(FORM,"$cgidir/mac/$input{'script'}.form")) {
+  my $fname=$input{'script'};
+  if (open(FORM,"$cgidir/mac/$fname.form")) {
     $ret.="<form method=\"get\" name=\"discus\"\n";
     $ret.="      action=\"$discgi\">\n";
     $ret.="<input type=\"hidden\" name=\"script\" ";
@@ -216,7 +216,7 @@ sub buildForm {
 
     my $pmax=0;
     while($line=<FORM>) {
-      chop($line); chop($line);
+      chomp($line); chomp($line);
       if ($line=~/^title=/) { $title=$line; $title=~s/title=//; }
      
       # horizontal line
@@ -245,7 +245,7 @@ sub buildForm {
         unless ($input{"P$para[0]"}) {$input{"P$para[0]"}=$para[2];}
 	$value=$input{"P$para[0]"};
         for (my $i=1; $i<=$para[1]; $i++) {
-          $line=<FORM>; chop($line); chop($line);
+          $line=<FORM>; chomp($line); chomp($line);
           @check=split(/,/,$line);
           $ret.="$check[0] \n";
           $ret.="<input type=\"radio\" name=\"P$para[0]\" value=\"$check[1]\"";
@@ -267,7 +267,7 @@ sub buildForm {
     $ret.="</form>\n";
     close FORM;
   } else {
-    $ret=0;
+    # $ret=0;
   }
 
   return $ret;
@@ -287,6 +287,9 @@ sub printImage {
       while (<ERR>) {print "$_";}
       close (ERR);
       print "<p align=right>\n";
+      if (-r "$disdir/$bname.log") {
+          print "[<a href=\"$dishtml/$bname.log\">Log file</a>]\n";
+      }
       print "[<a href=\"javascript:window.close()\">Close window</a>]</p>\n";
       unlink ("$disdir/$bname.err");
     }
@@ -298,7 +301,9 @@ sub printImage {
         if (-r "$disdir/$bname.ps") {
           print "[<a href=\"$dishtml/$bname.ps\">Postscript</a>]\n";
         }
-      
+        if (-r "$disdir/$bname.log") {
+            print "[<a href=\"$dishtml/$bname.log\">Log file</a>]\n";
+        }
         print "[<a href=\"javascript:window.close()\">Close window</a>]<br>\n";
         print "$cache</p>\n";
       } else {

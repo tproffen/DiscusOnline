@@ -3,7 +3,7 @@
 
 title=Polygon of atoms
 
-text=1,5,1,Number of atoms <i>n</i>
+text=1,5,2,Number of atoms <i>n</i>
 
 HR
 radio=2,2,1,Radiation
