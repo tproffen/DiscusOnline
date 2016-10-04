@@ -1,0 +1,95 @@
+##################################################################
+# This macro exectutes DISCUS and KUPLOT to create a rectangular
+# area of reciprocal space using different units.
+#
+# Version: 1.0
+# Author:  Th. Proffen  (tproffen@lanl.gov)
+#          R.B. Neder   (reinhard.neder@mail.uni-wuerzburg.de)
+##################################################################
+# Required parameters:
+#
+#    $1 : Unit length along a-axis
+#    $2 : Unit length along b-axis
+#    $3 : Unit type, A**-1, h or Q
+#    $4 : Graphics size
+#
+##################################################################
+#
+set error,exit
+#
+kuplot
+#
+fopen 1,teach_units_recip_$1_$2_$3_$4.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+if ($1.le.0 .or. $2.le.0) then
+  fopen 1,teach_units_recip_$1_$2_$3_$4.err
+  fput 1,'<h2>Invalid unit range!</h2>'
+  fput 1,'Units must be larger than zero'
+  fclose 1
+else
+#
+  rese
+#
+  load ni,../Inputs/teach_units_recip.inte
+#
+# Switch to the user units
+#
+  if ( $3.eq.1) then
+    r[1] = 0.200/$1
+    r[2] = 0.125/$2
+  elseif ( $3.eq.2 ) then
+    r[1] = 1.0
+    r[2] = 1.0
+  elseif ( $3.eq.3 ) then
+    r[1] = 0.200/6.28
+    r[2] = 0.125/6.28
+  endif
+#
+  ccal mul,wx,1,r[1]
+  ccal mul,wy,1,r[2]
+#
+  lwid 0,0.1
+  font just,center
+  font typ,1,1
+  font typ,2,1
+  font typ,3,1
+  font typ,4,1
+  font typ,5,1
+  font typ,6,1
+  font siz,2,18
+  font siz,3,18
+#
+  skal -2.50*r[1],2.50*r[1],-2.50*r[2],2.50*r[2]
+  aver (0.125/r[2])/(0.2/r[1])
+  mark int(1000.*0.5*r[1])*0.001,int(1000.*1.0*r[2])*0.001
+  fnam off
+  msize 1,0.5
+  tit2 diffraction pattern
+  if ( $3.eq.1) then
+    achx x in multiples of [$1\A\u-1\d]
+    achy y in multiples of [$2\A\u-1\d]
+  elseif ( $3.eq.2 ) then
+    achx x reciprocal lattice constants [h]
+    achy y reciprocal lattice constants [h]
+  elseif ( $3.eq.3 ) then
+    achx x in multiples of [Q]
+    achy y in multiples of [Q]
+  endif
+  hlin 1,1000,500,   20
+  hart 1,2
+  cmap gray
+#
+  size[3]=$4
+  save pic,teach_units_recip_$1_$2_$3_$4.gif
+  save ps,teach_units_recip_$1_$2_$3_$4.ps
+#
+  system rm -f teach_units_recip_$1_$2_$3_$4.err
+#
+endif
+exit
+#
+exit

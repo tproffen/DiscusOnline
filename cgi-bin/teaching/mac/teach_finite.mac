@@ -1,0 +1,107 @@
+##################################################################
+# This macro exectutes DISCUS and KUPLOT via WWW interface.
+#
+# Version: 1.0
+# Author:  Th. Proffen  (proffen@pa.msu.edu)
+#          R.B. Neder   (reinhard.neder@mail.uni-wuerzburg.de)
+##################################################################
+# Required parameters:
+#
+#    $1 : Number of unit cells in x-direction
+#    $2 : Number of unit cells in y-direction
+#    $3 : Minimum value in h
+#    $4 : Maximum value in h
+#    $5 : Minimum value in k
+#    $6 : Maximum value in k
+#    $7 : Number of points in h-direction
+#    $8 : Number of points in k-direction
+#    $9 : Graphic size
+#
+##################################################################  
+#
+set error,exit
+#
+discus
+if ($1.lt.2 .or. $1.gt.20 .or. $2.lt.2 .or. $2.gt.20) then
+  fopen teach_finite_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+  fput '<h2>Invalid crystal size specified !</h2>'
+  fput 'Allowed range in x,y: 2 to 20'
+  fclose
+#
+elseif ($7.lt.2 .or. $7.gt.200 .or. $8.lt.2 .or. $8.gt.200) then
+  fopen teach_finite_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+  fput '<h2>Invalid grid size in reciprocal space specified !</h2>'
+  fput 'Allowed range in dh,dk: 2 to 200'
+  fclose
+#
+elseif (($3).ge.($4) .or. ($5).ge.($6)) then
+  fopen teach_finite_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+  fput '<h2>Invalid boundaries in h and/or k specified !</h2>'
+  fclose
+#
+else
+  sys echo 'title Primitive test structure        '  > tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll
+  sys echo 'spcgr P1                              ' >> tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll
+  sys echo 'cell 5.00, 5.00, 5.00, 90., 90., 90.  ' >> tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll
+  sys echo 'atoms                                 ' >> tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll
+  sys echo 'SI   0.00  0.00  0.00   0.5           ' >> tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll
+#
+  read
+  cell tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll,$1,$2,1
+#
+  four
+  ll   $3, $5, 0.0   
+  lr   $4, $5, 0.0   
+  ul   $3, $6, 0.0   
+  na $7
+  no $8
+  xray
+  run
+  exit
+#
+  output
+  form stan
+  outf tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.inte
+  value inte
+  run
+  exit
+endif
+exit
+#
+##################################################################
+# Here we start KUPLOT
+##################################################################
+#
+kuplot
+rese
+#
+load ni,tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.inte
+#
+lwid 0,0.1
+font just,center
+mark 1,1
+aver 1
+achx h
+achy k
+achz Intensity
+fset 2
+fnam off
+r[50]=14*14*$1*$2*0.2
+hlin 1,0.0,r[50],1
+hart 1,2
+tit1 Scattering - Crystal $1x$2x1 unit cells
+tit2 Grid $7x$8 points - Scale 0.2 x F(000)
+cmap fire
+grid on
+#
+save ps,teach_finite_$1_$2_$3_$4_$5_$6_$7_$8_$9.ps
+size[3]=$9
+save pic,teach_finite_$1_$2_$3_$4_$5_$6_$7_$8_$9.gif
+exit
+#
+##################################################################
+# Some cleaning up - only GIF output remains
+##################################################################
+#
+system rm -f tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.*
+exit
