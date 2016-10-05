@@ -203,7 +203,7 @@ sub buildForm {
     $tab_bg="CCCCCC";
     $head_bg="CCCCCC";
     $head_fg="990000";
-    $gsize=1.0;
+    $gsize=1.5;
     $fside="left";
   }
 
@@ -296,7 +296,7 @@ sub printImage {
   else
     {
       unless ($startup) {
-        print "<img name=\"image\" src=\"$dishtml/$bname.gif\" vspace=5>\n";
+        print "<img name=\"image\" src=\"$dishtml/$bname.gif\" width=\"90%\" vspace=5>\n";
         print "</center>\n<p align=\"right\">";
         if (-r "$disdir/$bname.ps") {
           print "[<a href=\"$dishtml/$bname.ps\">Postscript</a>]\n";

@@ -14,7 +14,7 @@ text=2,5,0.0,y
 
 HR
 radio=3,3,1,Atom type
-Electron,1
+Hydrogen,1
 Silicon,2
 Lead,3
 

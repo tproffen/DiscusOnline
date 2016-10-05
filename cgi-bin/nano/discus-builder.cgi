@@ -29,57 +29,19 @@ use Time::HiRes;
 #########################################################################
 
 $find    = "/usr/bin/find";
-$find    = "/usr/bin/find";
 $jmol    = "/jmol";
-$disurl  = "http://discus.sourceforge.net";
-$kupurl  = "http://discus.sourceforge.net";
+$disurl  = "http://tproffen.github.io/DiffuseCode";
+$kupurl  = "http://tproffen.github.io/DiffuseCode";
 $jmolurl = "http://www.jmol.org/";
 $cgidir  = cwd;
 
-# Skywalker setup
-
-if ($ENV{HTTP_HOST} =~/skywalker.lansce.lanl.gov/) {
-  $dishtml = "http://skywalker.lansce.lanl.gov/nano";
-  $discgi  = "http://skywalker.lansce.lanl.gov/cgi-bin/nano/discus-builder.cgi";
-  $plotcgi = "http://skywalker.lansce.lanl.gov/cgi-bin/nano/plotter.cgi";
-  $disdir  = "/var/www/html/nano";
-  $outdir  = "/var/www/html/nano/Output";
-  $wwwout  = "/nano/Output/";
-  $dpath   = "/usr/local/bin/";
-}
-# Local MAC setup
-
-elsif ($ENV{HTTP_HOST} =~/localhost/) {
-  $dishtml = "http://localhost/nano";
-  $discgi  = "http://localhost/cgi-bin/nano/discus-builder.cgi";
-  $plotcgi = "http://localhost/cgi-bin/nano/plotter.cgi";
-  $disdir  = "/Library/WebServer/Documents/nano/";
-  $outdir  = "/Library/WebServer/Documents/nano/Output";
-  $wwwout  = "/nano/Output/";
-  $dpath   = "/usr/local/bin/";
-}
-
-# LANL server setup (development)
-
-elsif ($ENV{HTTP_HOST} =~/totalscattering.ds.lanl.gov/) {
-  $dishtml = "/nano";
-  $discgi  = "/cgi-bin/projects/tscattering/nano/discus-builder.cgi";
-  $plotcgi = "/cgi-bin/projects/tscattering/nano/plotter.cgi";
-  $disdir  = "/var/www/html/yellow/development/dev-green/docs/projects/tscattering/nano";
-  $outdir  = "/var/www/html/yellow/development/dev-green/docs/wrtout/projects/tscattering/nano/Output";
-  $wwwout  = "http://dev-g.lanl.gov/wrtout/projects/tscattering/nano/Output/";
-  $dpath   = "$cgidir/../discus/";
-}
-
-elsif ($ENV{HTTP_HOST} =~/totalscattering.lanl.gov/) {
-  $dishtml = "/nano";
-  $discgi  = "/cgi-bin/projects/tscattering/nano/discus-builder.cgi";
-  $plotcgi = "/cgi-bin/projects/tscattering/nano/plotter.cgi";
-  $disdir  = "/var/www/html/green/docs/projects/tscattering/nano";
-  $outdir  = "/var/www/html/green/docs/wrtout/projects/tscattering/nano/Output";
-  $wwwout  = "http://www.lanl.gov/wrtout/projects/tscattering/nano/Output/";
-  $dpath   = "$cgidir/../discus/";
-}
+$dishtml = "/nano";
+$discgi  = "/cgi-bin/nano/discus-builder.cgi";
+$plotcgi = "/cgi-bin/nano/plotter.cgi";
+$disdir  = "/var/www/lighttpd/nano";
+$outdir  = "/var/www/lighttpd/nano/Output";
+$wwwout  = "/nano/Output/";
+$dpath   = "/usr/local/bin/";
 
 
 #########################################################################
@@ -123,13 +85,9 @@ MAIN:
   
   print $cgi->header;
   print "<html><head>\n";
-  print "<link href=\"$dishtml/style/builder.css\" rel=\"stylesheet\" ";
-  print " type=\"text/css\">\n";
   print "<script src=\"$dishtml/scripts/validate.js\"></script>\n";
   print "<script src=\"$jmol/Jmol.js\"></script>\n";
   print "</head><td>\n";
-
-  &include_file("$disdir/header.html");
 
   print "<script>\n";
   print "  jmolInitialize(\"$jmol\");\n";
@@ -160,7 +118,7 @@ MAIN:
 
   }
   print "</div>\n";
-  &include_file("$disdir/footer.html");
+  print "</body></html>\n";
 }
 
 #------------------------------------------------------------------------------
@@ -171,15 +129,11 @@ sub runDiscus {
   my $cmd.="export LD_LIBRARY_PATH=$dpath:$LD_LIRARY_PATH;";
   $cmd.="umask 022;";
   $cmd.="cd $cgidir/macros/$mac;";
-  $cmd.="$dpath/discus << EOF > $outdir/$id.log 2>&1\n";
-  $cmd.="set prompt,redirect\n";
-  $cmd.="set error,exit\n";
-  $cmd.="\@main ";
+  $cmd.="$dpath/discus -macro main.mac ";
   for (my $ip=0; $ip<$npar; $ip++) {$cmd.=$cgi->param("P$ip").",";}
-  $cmd.="$outdir/$id\n";
-  $cmd.="EOF\n";
+  $cmd.="$outdir/$id";
 
-  system "$cmd > /dev/null";
+  system "$cmd > $outdir/$id.log";
   my $end=Time::HiRes::time();
   $el=$end-$start;
 }
