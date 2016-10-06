@@ -29,18 +29,18 @@ use Time::HiRes;
 #########################################################################
 
 $find    = "/usr/bin/find";
-$jmol    = "/jmol";
+$jmol    = "/scripts";
 $disurl  = "http://tproffen.github.io/DiffuseCode";
 $kupurl  = "http://tproffen.github.io/DiffuseCode";
 $jmolurl = "http://www.jmol.org/";
 $cgidir  = cwd;
 
-$dishtml = "/nano";
-$discgi  = "/cgi-bin/nano/discus-builder.cgi";
-$plotcgi = "/cgi-bin/nano/plotter.cgi";
-$disdir  = "/var/www/lighttpd/nano";
-$outdir  = "/var/www/lighttpd/nano/Output";
-$wwwout  = "/nano/Output/";
+$dishtml = "/legacy/nano";
+$discgi  = "/cgi-bin/legacy/nano/discus-builder.cgi";
+$plotcgi = "/cgi-bin/legacy/nano/plotter.cgi";
+$disdir  = "/var/www/lighttpd/legacy/nano";
+$outdir  = "/var/www/lighttpd/legacy/nano/Output";
+$wwwout  = "/legacy/nano/Output/";
 $dpath   = "/usr/local/bin/";
 
 
@@ -70,7 +70,7 @@ MAIN:
     $form=&buildForm($mac);
     if ($form) {
       if ($cgi->param('P1')) {
-        $id=$mac.time();
+        $id="$mac.".time();
         &runDiscus($mac);
       } else {
         $id="Defaults/$mac";
@@ -86,13 +86,17 @@ MAIN:
   print $cgi->header;
   print "<html><head>\n";
   print "<script src=\"$dishtml/scripts/validate.js\"></script>\n";
-  print "<script src=\"$jmol/Jmol.js\"></script>\n";
-  print "</head><td>\n";
-
-  print "<script>\n";
-  print "  jmolInitialize(\"$jmol\");\n";
-  print "  jmolCheckBrowser(\"popup\", \"$jmol/browsercheck\", \"onClick\");\n";
+  print "<script src=\"$jmol/JSmol.min.js\"></script>\n";
+  print "<script type=\"text/javascript\">\n";
+  print "  var Info = {\n";
+  print "    width: $jsize,\n";
+  print "    height: $jsize,\n";
+  print "    use: \"HTML5\",\n";
+  print "    j2sPath: \"/scripts/j2s\",\n";
+  print "    console: \"jmolApplet0_infodiv\"\n";
+  print "  }\n";
   print "</script>\n";
+  print "</head><td>\n";
 
   print "<div class=\"builder\">\n";
   if ($err) {
@@ -294,28 +298,10 @@ sub printForm {
   # Jmol controls
   
   print "<h3>Plot Controls</h3>\n";
-  print "<script>\n";
+  print "<p><b>Spin model</b></p>\n";
+  print "<a href=\"javascript:Jmol.script(jmolApplet0,'spin on')\">Spin ON</a><br>\n";
+  print "<a href=\"javascript:Jmol.script(jmolApplet0,'spin off')\">Spin OFF</a>\n";
 
-  print " jmolHtml(\"Atoms\");\n";
-  print " jmolRadioGroup([\n";
-  print "  [\"spacefill off\", \"off\"],\n";
-  print "  [\"spacefill 20%\", \"20%\", \"checked\"],\n";
-  print "  [\"spacefill 100%\", \"100%\"]\n";
-  print "  ]);\n";
-  print " jmolBr();\n";
-
-  print " jmolHtml(\"Bonds\");\n";
-  print " jmolRadioGroup([\n";
-  print "  [\"wireframe off\", \"off\"],\n";
-  print "  [\"wireframe 0.15\", \"on\", \"checked\"],\n";
-  print "  ]);\n";
-  print " jmolBr();\n";
-  print " jmolBr();\n";
-
-  print " jmolCheckbox(\"spin on\", \"spin off\", ";
-  print " \"Spin particle\"); jmolBr();\n";
-  print "</script>\n";
-  
   # Info part
 
   print "<h3>Results</h3>\n";
@@ -331,7 +317,8 @@ sub printStructure {
   print "<td width=\"$jsize\" height=\"$jsize\">\n";
   if (-r "$outdir/$id.cif") {
      print "<script>\n";
-     print "jmolApplet($jsize, \"load $wwwout/$id.cif; ";
+     print "jmolApplet0 = Jmol.getApplet(\"jmolApplet0\", Info);\n";
+     print "Jmol.script(jmolApplet0, \"load $wwwout/$id.cif; ";
      print "unitcell OFF; axes OFF; select *; center selected;\");\n";
      print "</script>\n";
   } else {
@@ -370,9 +357,7 @@ sub printInfo {
     print "href=\"#\">DISCUS logfile</a>\n";
   }
   my $ww=int(1.05*$jsize); $hh=int(1.3*$jsize);
-  print "- <a onClick=\"window.open('/nano/image.html','image',";
-  print "'width=$ww,height=$hh')\" href=\"#\">Image</a> ";
-  printf "- <b>Calculation time:</b> <i>%.3f sec</i>\n", $el;
+  printf "<b>Calculation time:</b> <i>%.3f sec</i>\n", $el;
   print "</th>\n";
 }
 

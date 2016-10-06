@@ -35,10 +35,10 @@ use POSIX qw(strftime);
 # MSU
 #------------------------------------------------------------------------
 
-$dishtml="/teaching/Output";
-$discgi ="/cgi-bin/teaching/discus2.cgi";
-$disdir ="/var/www/lighttpd/teaching/Output";
-$cgidir ="/var/www/lighttpd/cgi-bin/teaching/";
+$dishtml="/legacy/teaching/Output";
+$discgi ="/cgi-bin/legacy/teaching/discus2.cgi";
+$disdir ="/var/www/lighttpd/legacy/teaching/Output";
+$cgidir ="/var/www/lighttpd/cgi-bin/legacy/teaching/";
 $discus ="/usr/local/bin";
 $grfont ="/usr/local/pgplot/grfont.dat";
 $disurl ="http://tproffen.github.io/DiffuseCode/";
