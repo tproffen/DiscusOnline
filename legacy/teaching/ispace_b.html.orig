@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>Interactive guide to diffraction ..</title>
+</head> 
+<body bgcolor="#FFFFFF" text="#0A3E00"
+      link="#1A4D73" vlink="#1E5986" alink="#CC0005"
+      topmargin="0" leftmargin="0" rightmargin="0"
+      marginwidth="0" marginheight="0">
+
+<table border=0 cellpadding=10 width=100% height="100%" bgcolor="#BDC6DE">
+
+<tr>
+  <td colspan=2 align="center" height="5%" bgcolor="#BDC6DE">
+    <b>Interactive Tutorial about Diffraction</b><br>
+    <b><font color="#000099" size="+2">Interactive example:
+       HK plane simulator</font></b>
+  </td>
+</tr>
+
+<tr>
+ <td valign="top" align="right" bgcolor="#CDD6EE" width="15%">
+ 
+    <center><img src="Pics/diffuse.gif" align="center" vspace="15"></center><p>
+    <p>
+    <font color="#000099"><b>Reciprocal space</b></font><br>
+    <a href="space_a.html">Reciprocity</a><br>
+    <a href="space_b.html">Square lattice</a><br>
+    <a href="space_c.html">Rectangular lattice</a><br>
+    <a href="space_d.html">Oblique lattice</a><br>
+    <a href="space_e.html">Translation of lattice</a><br>
+    <a href="space_f.html">Rotation lattice</a><p>
+    
+    <font color="#000099"><b>Interactive examples</b></font><br>
+    <a href="ispace_a.html">2D crystal builder</a><br>
+    <i>Planes and HKL's</i><br>
+    <a href="ispace_c.html">Finite size effect</a><p>
+    <font color="#000099"><b>Goto</b></font><br>
+    <a href="teaching.html">Contents</a><br>
+ </td>
+
+ <td bgcolor="#FFFFFF" valign="top">
+    The main emphasis of this exercise is to draw
+    different hkl planes into a crystal structure and to compare these
+    to the corresponding Bragg reflection. In this 2-dimensional example,
+    the planes are obviously reduced to hk lines.
+    This time, the controls on the left will create a grid of 5*5 Pb atoms.
+    You can still set the ratio
+    of the separation distance and angle between the axes. This
+    defines the structure which than can be shifted and rotated with
+    respect to the real space coordinate system.
+    The diffraction pattern of the resulting structure is calculated. 
+
+  <p><hr><p><center>
+     <h2><a href="/cgi-bin/legacy/teaching/discus2.cgi?script=teach_planes" target="_blank">Start Simulator</a></h2>
+  </center><hr><p>
+
+    Start exploring and try to answer the question below:</font><p>
+    <ul>
+      <li>What is the relationship between the indices h,k and the
+          position and orientation of the planes in direct space ?</li>
+      <li>What is the effect of the hk indices on the distance between
+          the planes ?</li>
+      <li>How do the b/a ratio and the angle affect the hk planes?</li>
+      <li>How do the rotation and the shifts affect the hk planes?</li>
+      <li>Where is the Bragg reflection corresponding to the hk plane ?</li>
+      <li>How do the b/a ratio and the angle affect the hk planes?</li>
+      <li>How does rotating and shifting the complete structure
+          affect the Bragg reflection ? </li>
+      <li>What, if any, influence does the radiation have on the hk planes
+          and the Bragg reflection ? </li>
+    </ul>
+    <p>
+    <font color="#000099">
+    The program will draw the crystal structure in the left image, and the
+    corresponding diffraction pattern in the right image. All atoms will
+    be drawn in blue, except the atom at the origin of the unit cell which
+    is green. The unit cell is outlined in red. The corresponding unit
+    cell in reciprocal space is drawn in blue.
+    The hk planes in direct space are drawn as green lines. The thick green
+    line represents a vector normal to the planes. The corresponding
+    vector to the Bragg reflection is drawn in green as well.
+    <p>
+    <font color="#000099">Once you are done, click <a href="ispace_r.html">
+    here</a> to verify your answers.</font>
+  </td>
+</tr>
+
+<tr>
+  <td align="right" colspan="2" height="5%" bgcolor="#BDC6DE">
+  &copy <a href="mailto:tproffen@ornl.gov">Th. Proffen</a> and <a
+  href="mailto:reinhard.neder@fau.de">R.B. Neder</a>,
+  2016
+  </td>
+</tr></table>
+</body>
+</html> 

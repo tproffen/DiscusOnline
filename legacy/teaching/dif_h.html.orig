@@ -1,0 +1,170 @@
+<html>
+<head>
+<title>Interactive guide to diffraction ..</title>
+</head> 
+<body bgcolor="#FFFFFF" text="#0A3E00"
+      link="#1A4D73" vlink="#1E5986" alink="#CC0005"
+      topmargin="0" leftmargin="0" rightmargin="0"
+      marginwidth="0" marginheight="0">
+
+<table border=0 cellpadding=10 width=100% height="100%" bgcolor="#BDC6DE">
+
+<tr>
+  <td colspan=2 align="center" height="5%" bgcolor="#BDC6DE">
+    <b>Interactive Tutorial about Diffraction</b><br>
+    <b><font color="#000099" size="+2">Diffuse scattering:
+       Stacking faults</font></b>
+  </td>
+</tr>
+
+<tr>
+ <td valign="top" align="right" bgcolor="#CDD6EE" width="15%">
+ 
+    <center><img src="Pics/diffuse.gif" align="center" vspace="15"></center><p>
+    <p>
+    <font color="#000099"><b>Diffuse scattering</b></font><br>
+    <a href="dif_a.html">Thermal I</a><br>
+    <a href="dif_b.html">Thermal II</a><br>
+    <a href="dif_c.html">Occupational I</a><br>
+    <a href="dif_d.html">Occupational II</a><br>
+    <a href="dif_e.html">Longitudinal waves</a><br>
+    <a href="dif_f.html">Transversal waves</a><br>
+    <a href="dif_g.html">Short range order</a><br>
+    <i>Stacking faults</i><p>
+    
+    <font color="#000099"><b>Interactive examples</b></font><br>
+    <a href="idif_a.html">Displacement waves</a><br>
+    <a href="idif_b.html">Short range order</a><br>
+    <a href="idif_c.html">Stacking faults</a><p>
+    
+    <font color="#000099"><b>Goto</b></font><br>
+    <a href="teaching.html">Contents</a><br>
+ </td>
+
+ <td bgcolor="#FFFFFF" valign="top">
+  This example shows the effect of stacking faults. They are illustrated by
+  use of a 2-D example. The crystal is build up of rows corresponding to a
+  primitive unit structure. Three different layers are stacked: <I>a</I> at
+  x=0.0, <I>b</I> at x=1/3 and <I>c</I> at x=2/3. The stacking sequence is
+  controlled by two probabilities ALPHA and BETA. The meaning of these
+  probabilities is defined as:
+  <p>
+  <center><table border="0" bgcolor="#BDC6DE" cellpadding="10">
+  <tr><td bgcolor="#F5F5FF">
+<pre>
+      ALPHA  probability of "ab" followed by "a"
+  1 - ALPHA  probability of "ab" followed by "c"
+ 
+      BETA   probability of "ba" followed by "b"
+  1 - BETA   probability of "ba" followed by "c"</pre>
+  <hr>
+<pre>
+  ALPHA  BETA        resulting structure
+  0.0    0.0         pure cubic sequence
+  0.05   0.05        Sequence of cubic twins
+  0.5    0.5         random stacking
+  1.0    1.0         pure hexagonal sequence</pre>
+  </td></tr></table></center>
+  <p>
+  The layers "a","b" and "c" can be rotated cylindrically.
+  The following images show a sequence going from ALPHA=BETA=0, i.e. pure cubic
+  sequence to ALPHA=BETA=1, a pure hexagonal sequence. The left image shows
+  part of the crystal, the right image the corresponding Fourier transform.
+  To get a larger image just click on the corresponding picture.
+  <P>
+  A note on the indices: The crystal was created on a square coordinate system
+  with the x=1 being the distance between atoms in each row and y=1 being the
+  separation of rows. Accordingly the reciprocal space direction labeled <h>
+  corresponds to the [110] direction of the three dimensional hexagonal or
+  cubic crystal. The reciprocal k direction corresponds to the hexagonal
+  [001] and the cubic [111] direction. The spacing is doubled for a hexagonal
+  crystal and tripled for a cubic crystal.
+  <p>
+  <b>ALPHA=BETA=0.00</b>
+  <p>
+  <center>
+    <a href="dif18.html">
+    <img src="Pics/dif18s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="dif19.html">
+    <img src="Pics/dif19s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  The first structure is a perfect "abc" sequence. Only sharp Bragg reflections
+  of the cubic structure are observed.
+  <br clear=all>
+  <p>
+  <b>ALPHA=BETA=0.05</b>
+  <p>
+  <center>
+    <a href="dif20.html">
+    <img src="Pics/dif20s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="dif21.html">
+    <img src="Pics/dif21s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  The probability of a hexagonal sequence is very low. Accordingly if such a
+  sequence occurs, the crystal is continued immediately as the cubic structure
+  in its twined orientation. The Bragg reflections at h=0 and h=3 remain
+  invariant, in addition to the Bragg reflections of the first image, those
+  of the twined orientation appear. Weak diffuse streaks connect the Bragg
+  reflections at h=1 and h=2.
+  <br clear=all>
+  <p>
+  <b>ALPHA=BETA=0.20</b>
+  <p>
+  <center>
+    <a href="dif22.html">
+    <img src="Pics/dif22s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="dif23.html">
+    <img src="Pics/dif23s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  The probability for hexagonal stacking increases. The Bragg reflections at
+  h=1 and h=2 are replaced by diffuse streaks that are absent at integer k.
+  <br clear=all>
+  <p>
+  <b>ALPHA=BETA=0.50</b>
+  <p>
+  <center>
+    <a href="dif24.html">
+    <img src="Pics/dif24s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="dif25.html">
+    <img src="Pics/dif25s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  The random stacking of cubic and hexagonal sequences causes continuous
+  diffuse streaks at h=1 and h=3. As for all the other situations, the Bragg
+  reflections at h=3n remain invariant.
+  <br clear=all>
+  <p>
+  <b>ALPHA=BETA=0.80</b>
+  <p>
+  <center>
+    <a href="dif26.html">
+    <img src="Pics/dif26s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="dif27.html">
+    <img src="Pics/dif27s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  The crystal becomes predominantly hexagonal. The diffuse streaks start to
+  develop sharp maxima at k=n and k=n+0.5.
+  <br clear=all>
+  <p>
+  <b>ALPHA=BETA=1.00</b>
+  <p>
+  <center>
+    <a href="dif28.html">
+    <img src="Pics/dif28s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="dif29.html">
+    <img src="Pics/dif29s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  A perfect hexagonal crystal has been created. The diffuse streaks have
+  disappeared, the Bragg reflections of the hexagonal structure result.
+  </td>
+</tr>
+
+<tr>
+  <td align="right" colspan="2" height="5%" bgcolor="#BDC6DE">
+  &copy <a href="mailto:tproffen@ornl.gov">Th. Proffen</a> and <a
+  href="mailto:reinhard.neder@fau.de">R.B. Neder</a>,
+  2016
+  </td>
+</tr></table>
+</body>
+</html>
+

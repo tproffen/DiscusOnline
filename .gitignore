@@ -1,3 +1,11 @@
+# Ignore these
+
+scripts/j2s
+scripts/JSmol.min.js
+scripts/plotly-latest.min.js
+legacy/teaching/Output
+legacy/nano/Output
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db

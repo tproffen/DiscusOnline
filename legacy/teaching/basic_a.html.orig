@@ -1,0 +1,86 @@
+<html> 
+<head>
+<title>Interactive guide to diffraction ..</title>
+</head> 
+<body bgcolor="#FFFFFF" text="#0A3E00"
+      link="#1A4D73" vlink="#1E5986" alink="#CC0005"
+      topmargin="0" leftmargin="0" rightmargin="0"
+      marginwidth="0" marginheight="0">
+
+<table border=0 cellpadding=10 width=100% height="100%" bgcolor="#BDC6DE">
+
+<tr>
+  <td colspan=2 align="center" height="5%" bgcolor="#BDC6DE">
+    <b>Interactive Tutorial about Diffraction</b><br>
+    <b><font color="#000099" size="+2">Basic example I: Single atom</font></b>
+  </td>
+</tr>
+
+<tr>
+ <td valign="top" align="right" bgcolor="#CDD6EE" width="15%">
+ 
+    <center><img src="Pics/diffuse.gif" align="center" vspace="15"></center><p>
+    <p>
+    <font color="#000099"><b>Basic examples</b></font><br>
+    <i>Single atom</i><br>
+    <a href="basic_b.html">Pair of atoms</a><br>
+    <a href="basic_c.html">Row of atoms</a><p>
+    <font color="#000099"><b>Interactive examples</b></font><br>
+    <a href="ibasic_a.html">1D crystal builder</a><br>
+    <a href="ibasic_b.html">Polygons of atoms</a><br>
+    <a href="ibasic_c.html">Different atoms</a><br>
+    <a href="ibasic_d.html">Ewald sphere</a><br>
+    <a href="iunits_a.html">Units</a><p>
+    <font color="#000099"><b>Goto</b></font><br>
+    <a href="teaching.html">Contents</a><br>
+ </td>
+
+ <td bgcolor="#FFFFFF" valign="top">
+ 
+  These are basic examples that familiarize students with the concept
+  of structure simulations and Fourier transforms. The Fourier
+  transforms of single atoms and small groups of atoms are calculated
+  in one and two dimensions. You can either work through the examples
+  first and then move on to the <font color="#DD0000">interactive
+  simulation</font>, or you can try running the <font color="#DD0000">
+  simulations</font> first and then verify some of
+  your findings using the examples given.
+  <p>
+  In this first example we calculate the Fourier transform of a single
+  silicon atom. The scattering factors for X-rays are used.  The atom
+  is shown schematically as a disk. Later examples show the actual
+  electron density distribution. The pictures below show the single
+  atom and the corresponding 1D and 2D Fourier transform. Remember
+  that you can get a <font color="#DD0000">full screen version</font>
+  of the pictures by clicking on them.
+  <p>
+  <center>
+    <a href="basic1.html">
+    <img src="Pics/basic1s.gif" hspace=10 vspace=5 border=0></a>
+    <a href="basic2.html">
+    <img src="Pics/basic2s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="basic3.html">
+    <img src="Pics/basic3s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  <p>
+  The middle image shows a one dimensional cut through the center of
+  reciprocal space. You can see that the intensity drops off
+  continuously with increasing scattering vector. This is caused by
+  the finite size of the electron density distribution at the
+  atom. The right image shows a 2-dimensional section through
+  reciprocal space. As depicted by the read and purple colors the
+  intensity is highest at the origin of reciprocal space. The Fourier
+  transform of a single atom has spherical symmetry corresponding to
+  the spherical symmetry of the electron density distribution.
+  </td>
+</tr>
+
+<tr>
+  <td align="right" colspan="2" bgcolor="#BDC6DE" height="5%">
+  &copy <a href="mailto:tproffen@ornl.gov">Th. Proffen</a> and <a
+  href="mailto:reinhard.neder@fau.de">R.B. Neder</a>,
+  2016
+  </td>
+</tr></table>
+</body>
+</html>

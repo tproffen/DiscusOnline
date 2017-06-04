@@ -1,3 +1,6 @@
 #!/bin/sed -f
-s/cgi-bin/cgi-bin\/legacy/g
+
+/<body/,/>/{s/.//g}
+
+s/<\/head>/<link href=\"\/styles\/discus.css\" rel=\"stylesheet\" type=\"text\/css\">\n<\/head>\n<body>/
 

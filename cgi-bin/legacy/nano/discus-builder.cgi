@@ -85,6 +85,8 @@ MAIN:
   
   print $cgi->header;
   print "<html><head>\n";
+  print "<link href=\"/styles/discus.css\" ";
+  print "      rel=\"stylesheet\"  type=\"text/css\">\n";
   print "<script src=\"$dishtml/scripts/validate.js\"></script>\n";
   print "<script src=\"$jmol/JSmol.min.js\"></script>\n";
   print "<script type=\"text/javascript\">\n";
@@ -96,17 +98,18 @@ MAIN:
   print "    console: \"jmolApplet0_infodiv\"\n";
   print "  }\n";
   print "</script>\n";
-  print "</head><td>\n";
-
+  print "</head>\n";
+  print "<body>\n";
+  print "<center>\n";
   print "<div class=\"builder\">\n";
   if ($err) {
     print "<h1>ERROR</h1>\n<p class=\"error\">$err</p>\n";
   } else {
     my $name=uc($mac);
-    print "<h1>Builder: $name\n";
-    print "<div style=\"display: none;\" id=\"wait\" >\n";
-    print " - CALULATING, BE PATIENT ..</div></h1>\n";
-    print "<table width=\"100%\">\n";
+    print "<table>\n";
+    print "<tr><th colspan=\"2\"><h1>Builder: $name</h1>\n";
+    print "<div \"display: none;\" id=\"wait\" >\n";
+    print "<i>Please wait ..</i></div></th></tr>\n";
 
     print "<tr>\n";
     &printStructure();
@@ -299,7 +302,7 @@ sub printForm {
   
   print "<h3>Plot Controls</h3>\n";
   print "<p><b>Spin model</b></p>\n";
-  print "<a href=\"javascript:Jmol.script(jmolApplet0,'spin on')\">Spin ON</a><br>\n";
+  print "<a href=\"javascript:Jmol.script(jmolApplet0,'spin on')\">Spin ON</a> -- \n";
   print "<a href=\"javascript:Jmol.script(jmolApplet0,'spin off')\">Spin OFF</a>\n";
 
   # Info part
@@ -330,7 +333,8 @@ sub printStructure {
 #------------------------------------------------------------------------------
 sub printInfo {
 
-  my $cc ="onClick=\"window.open('$plotcgi?FILE=FFF','WWW','menubar=no,";
+  my $cc ="onClick=\"window.open('$plotcgi?FILE=FFF&TITLE=TTT','WWW','";
+     $cc.="menubar=no,";
      $cc.="toolbar=no,location=no,resizable=yes,scrollbars=yes,width=750,";
      $cc.="height=550')\"";
 
@@ -338,12 +342,15 @@ sub printInfo {
   print "<b>Files:</b>\n";
   if (-r "$outdir/$id.pow") {
     print "<a href=\"file.cgi?file=$id&type=pow\">Powder pattern</a> - ";
-    $url=$cc; $url=~s/FFF/$id.pow/g; $url=~s/WWW/PlotPow/;
+    $url=$cc; $url=~s/FFF/$id.pow/g; 
+    $url=~s/TTT/Power Pattern/; 
+    $url=~s/WWW/PlotPow/;
     print "[<a href=\"#\" $url>Plot</a>] -\n";
   }
   if (-r "$outdir/$id.gr") {
     print "<a href=\"file.cgi?file=$id&type=gr\">Pair Distribution Funtion</a> - ";
     $url=$cc; $url=~s/FFF/$id.gr/g; $url=~s/WWW/PlotGr/;
+    $url=~s/TTT/Pair Distribution Function/; 
     print "[<a href=\"#\" $url>Plot</a>] -\n";
   }
   if (-r "$outdir/$id.nipl") {
@@ -357,7 +364,7 @@ sub printInfo {
     print "href=\"#\">DISCUS logfile</a>\n";
   }
   my $ww=int(1.05*$jsize); $hh=int(1.3*$jsize);
-  printf "<b>Calculation time:</b> <i>%.3f sec</i>\n", $el;
+  printf " -- <b>Calculation time:</b> <i>%.3f sec</i>\n", $el;
   print "</th>\n";
 }
 

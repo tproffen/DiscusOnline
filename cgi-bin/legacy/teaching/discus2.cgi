@@ -62,7 +62,6 @@ MAIN:
   # Read in all variables set by the form
   &CGI::ReadParse(*input);
   $startup=!$input{'P1'};
-  $form=&buildForm();
 
   # Create parameter list for DISCUS call
   # Remove all blanks from each parameter, 
@@ -132,27 +131,33 @@ MAIN:
   print $cgi->header;
   print "<html>\n<head>\n";
   print "<title>$title</title>\n";
+  print "<link href=\"/styles/discus.css\" ";
+  print "      rel=\"stylesheet\"  type=\"text/css\">\n";
+
   print "<script language=\"JavaScript\">\n";
   print "  wait = new Image();\n";
-  print "  wait.src = \"$dishtml/wait.gif\"\n";;
-  print "  function message() {document.image.src=\"$dishtml/wait.gif\";}\n";
+  print "  wait.src = \"$dishtml/../Pics/wait.png\"\n";;
+  print "  function message() {document.image.src=\"$dishtml/../Pics/wait.png\";}\n";
   print "</script></head>\n";
 
-  print '<body bgcolor="#'."$page_bg".'" text="#0A3E00"'."\n";
+  print '<body text="#0A3E00"'."\n";
   print '    link="#1A4D73" vlink="#1E5986" alink="#CC0005"'."\n";
   print '    topmargin="0" leftmargin="0" rightmargin="0"'."\n";
   print '    marginwidth="0" marginheight="0">'."\n";
 
   print "<table border=0 cellpadding=10 height=100% \n";
-  print "       width=100% bgcolor=\"#$tab_bg\">\n";
+  print "       width=100%>\n";
   print "<tr>\n";
-  print "<td colspan=2 height=5% align=center bgcolor=\"#$head_bg\">\n";
+  print "<th colspan=2 height=5% align=center>\n";
   print "<b>Interactive Tutorial about Diffraction</b><br>\n";
-  print "<b><font color=\"#$head_fg\" size=\"+2\">";
+  print "<b><font size=\"+2\">";
   print "$title</font></b>\n";
-  print "</td>\n";
+  print "</th>\n";
   print "</tr>\n";
   print "<tr>\n";
+
+
+  $form=&buildForm();
 
   if ($fside eq 'left') {
     &printForm;
@@ -164,11 +169,11 @@ MAIN:
 
   print "</tr>\n";
   print "<tr>\n";
-  print "<td valign=bottom height=5% align=right ";
-  print " colspan=2 bgcolor=\"#$head_bg\">\n";
+  print "<th valign=bottom height=5% align=right ";
+  print " colspan=2>\n";
   print "Created using the programs <a href=\"$disurl\"> DISCUS</a> and\n";
   print "<a href=\"$kupurl\"> KUPLOT</a>\n";
-  print "</td></tr></table>\n";
+  print "</th></tr></table>\n";
 
   # Close the document cleanly.
   print $cgi->end_html;
@@ -264,6 +269,15 @@ sub buildForm {
     $pmax++;
     $ret.="<input type=\"hidden\" name=\"P$pmax\" value=\"$gsize\">\n";
     unless ($input{"P$pmax"}) {$input{"P$pmax"}=$gsize;}
+
+    # Text output 
+    if (open(OUT,"< $disdir/$bname.output")) {
+      $ret.="<hr><p align=\"center\"><b>Results</b></p>\n";
+      $ret.="<p align=\"left\" id=\"output\">\n";
+      while($oline=<OUT>) {$ret.=$oline;}
+      $ret.="<\p>\n";
+    }
+
     $ret.="</form>\n";
     close FORM;
   } else {
@@ -277,7 +291,7 @@ sub buildForm {
 
 sub printImage {
 
-  print "<td valign=middle align=center bgcolor=\"#$page_bg\">\n";
+  print "<td bgcolor=\"#FFFFFF\" valign=middle align=center>\n";
   if (-r "$disdir/$bname.err") 
     {
       print "<p align=center>\n";
@@ -296,7 +310,7 @@ sub printImage {
   else
     {
       unless ($startup) {
-        print "<img name=\"image\" src=\"$dishtml/$bname.gif\" width=\"90%\" vspace=5>\n";
+        print "<img name=\"image\" src=\"$dishtml/$bname.gif\" width=\"80%\" vspace=5>\n";
         print "</center>\n<p align=\"right\">";
         if (-r "$disdir/$bname.ps") {
           print "[<a href=\"$dishtml/$bname.ps\">Postscript</a>]\n";
@@ -307,7 +321,7 @@ sub printImage {
         print "[<a href=\"javascript:window.close()\">Close window</a>]<br>\n";
         print "$cache</p>\n";
       } else {
-        print "<img name=\"image\" src=\"$dishtml/startup.gif\" vspace=5>\n";
+        print "<img name=\"image\" src=\"$dishtml/../Pics/startup.png\" width=\"80%\" vspace=5>\n";
         print "</center>\n";
       }
     }
@@ -319,7 +333,7 @@ sub printImage {
 sub printForm {
 
   print "<td valign=top align=right \n";
-  print "    bgcolor=\"#$form_bg\" width=\"25%\">\n";
+  print "    width=\"35%\">\n";
   print "<p>\n$form\n</td>\n";
 }
 

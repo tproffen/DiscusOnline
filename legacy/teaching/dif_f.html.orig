@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>Interactive guide to diffraction ..</title>
+</head> 
+<body bgcolor="#FFFFFF" text="#0A3E00"
+      link="#1A4D73" vlink="#1E5986" alink="#CC0005"
+      topmargin="0" leftmargin="0" rightmargin="0"
+      marginwidth="0" marginheight="0">
+
+<table border=0 cellpadding=10 width=100% height="100%" bgcolor="#BDC6DE">
+
+<tr>
+  <td colspan=2 align="center" height="5%" bgcolor="#BDC6DE">
+    <b>Interactive Tutorial about Diffraction</b><br>
+    <b><font color="#000099" size="+2">Diffuse scattering:
+       Transversal waves</font></b>
+  </td>
+</tr>
+
+<tr>
+ <td valign="top" align="right" bgcolor="#CDD6EE" width="15%">
+ 
+    <center><img src="Pics/diffuse.gif" align="center" vspace="15"></center><p>
+    <p>
+    <font color="#000099"><b>Diffuse scattering</b></font><br>
+    <a href="dif_a.html">Thermal I</a><br>
+    <a href="dif_b.html">Thermal II</a><br>
+    <a href="dif_c.html">Occupational I</a><br>
+    <a href="dif_d.html">Occupational II</a><br>
+    <a href="dif_e.html">Longitudinal waves</a><br>
+    <i>Transversal waves</i><br>
+    <a href="dif_g.html">Short range order</a><br>
+    <a href="dif_h.html">Stacking faults</a><p>
+    
+    <font color="#000099"><b>Interactive examples</b></font><br>
+    <a href="idif_a.html">Displacement waves</a><br>
+    <a href="idif_b.html">Short range order</a><br>
+    <a href="idif_c.html">Stacking faults</a><p>
+    
+    <font color="#000099"><b>Goto</b></font><br>
+    <a href="teaching.html">Contents</a><br>
+ </td>
+
+ <td bgcolor="#FFFFFF" valign="top">
+  This example shows the effect of a transverse wave. The ideal crystal
+  consists of a primitive cubic structure with one atom at 0,0,0. A transverse
+  wave with wave vector displaces the atoms. The wave is characterized by:
+  <p>
+  <center><table border="0" bgcolor="#BDC6DE" cellpadding="10">
+  <tr><td bgcolor="#F5F5FF">
+<pre>
+wave vector   [100]
+wave length   27A     5.2 unit cells
+oscillation   [010]
+amplitude     0.5A    0.1 unit cells</pre>
+  </td></tr></table></center>
+  <p>
+  The left image shows a part of the crystal, 30*30 unit cells were used
+  for the calculation. The right image shows one quadrant of reciprocal space.
+  <p>
+  <center>
+    <a href="dif12.html">
+    <img src="Pics/dif12s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="dif13.html">
+    <img src="Pics/dif13s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  <p>
+  The satellite vector is 0.19 0 0, parallel to the wave vector in real space.
+  Its absolute value is inversely proportional to the wave length. The intensity
+  of the satellite reflections depends on the amplitude of the displacement.
+  Contrary to the last example, now the
+  satellites around the h00 reflections are systematically extinct. Here
+  the term <B>h</B> ( <B>u</B> - < <B>u</B> > ) equals zero and no deviation
+  from the averaged structure can be observed. Imagine the structure projected
+  onto the 100 line. This projection is identical to that of a undisturbed
+  crystal and accordingly the h00 reflections are identical.
+  </td>
+</tr>
+
+<tr>
+  <td align="right" colspan="2" height="5%" bgcolor="#BDC6DE">
+  &copy <a href="mailto:tproffen@ornl.gov">Th. Proffen</a> and <a
+  href="mailto:reinhard.neder@fau.de">R.B. Neder</a>,
+  2016
+  </td>
+</tr></table>
+</body>
+</html>
