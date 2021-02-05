@@ -1,0 +1,80 @@
+##################################################################
+# This macro exectutes DISCUS and KUPLOT to create a rectangular
+# unit cell and plot this with different units.
+#
+# Version: 1.0
+# Author:  Th. Proffen  (tproffen@lanl.gov)
+#          R.B. Neder   (reinhard.neder@mail.uni-wuerzburg.de)
+##################################################################
+# Required parameters:
+#
+#    $1 : Unit length along x-axis
+#    $2 : Unit length along y-axis
+#    $3 : Graphics size
+#
+##################################################################
+set error,exit
+#
+# Here we start KUPLOT
+#
+kuplot
+#
+fopen 1,teach_units_direct_$1_$2_$3.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+if ($1.lt.0.02 .or. $2.le.0.02) then
+  fopen 1,teach_units_direct_$1_$2_$3.err
+  fput 1,'<h2>Invalid unit range!</h2>'
+  fput 1,'Units must be larger than 0.02'
+  fclose 1
+else
+#
+  rese
+#
+  load cr,../Inputs/teach_units_direct.cr
+#
+# Switch to the user units
+#
+  r[1] = 5.0/$1
+  r[2] = 8.0/$2
+#
+  ccal mul,wx,1,r[1]
+  ccal mul,wy,1,r[2]
+#
+  lwid 0,0.1
+  font just,center
+  font typ,1,1
+  font typ,2,1
+  font typ,3,1
+  font typ,4,1
+  font typ,5,1
+  font typ,6,1
+  font siz,2,18
+  font siz,3,18
+#
+  skal -5.25*r[1],5.25*r[1],-2.5*r[2],2.5*r[2]
+  aver r[2]/r[1]
+  aver 8./5.
+  aver (1.0*$2)/(1.0*$1)
+  mark int(1000.*r[1])*0.001,int(1000.*1.0*r[2])*0.001
+  fnam off
+  msize 1,0.5
+  grid on
+  tit2 Crystal structure
+  achx x in multiples of [$1\A]
+  achy y in multiples of [$2\A]
+#
+  size[3]=$3
+#
+  save ps,teach_units_direct_$1_$2_$3.ps
+  save pic,teach_units_direct_$1_$2_$3.gif
+#
+  system rm -f teach_units_direct_$1_$2_$3.err
+#
+endif
+exit
+exit
+#

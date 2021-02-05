@@ -1,0 +1,12 @@
+# (c) Thomas Proffen, 2003
+
+title=Ewald sphere
+
+text=1,5,2.0,Separation in &Aring;
+text=2,5,0.0,Rotation <i>z</i> (deg.)
+
+HR
+text=3,5,0.707,Wavelength (&Aring;)
+
+HR
+submit

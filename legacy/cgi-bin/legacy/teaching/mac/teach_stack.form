@@ -1,0 +1,21 @@
+# (c) Thomas Proffen, 2003
+
+title=Stacking fault simulator
+
+# Syntax:
+#   text=no,size,default,label
+#   radio=no,size,default,label
+#     label,value
+#   gsize=no
+#   submit
+
+text=1,5,1.0,Probability &alpha;
+text=2,5,1.0,&beta;
+
+HR
+radio=3,2,1,Radiation
+X-rays,1
+Neutrons,2
+
+HR
+submit
