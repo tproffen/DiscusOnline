@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>Interactive guide to diffraction ..</title>
+</head> 
+<body bgcolor="#FFFFFF" text="#0A3E00"
+      link="#1A4D73" vlink="#1E5986" alink="#CC0005"
+      topmargin="0" leftmargin="0" rightmargin="0"
+      marginwidth="0" marginheight="0">
+
+<table border=0 cellpadding=10 width=100% height="100%" bgcolor="#BDC6DE">
+
+<tr>
+  <td colspan=2 align="center" height="5%" bgcolor="#BDC6DE">
+    <b>Interactive Tutorial about Diffraction</b><br>
+    <b><font color="#000099" size="+2">Downloading the tutorial</font></b>
+  </td>
+</tr>
+
+<tr>
+ <td valign="top" align="right" bgcolor="#CDD6EE" width="15%">
+    <center><img src="Pics/diffuse.gif" align="center" vspace="15"></center><p>
+    <p>
+    <font color="#000099"><b>Goto</b></font><br>
+    <a href="teaching.html">Contents</a><br>
+ </td>
+
+ <td bgcolor="#FFFFFF" valign="top">
+ <font color="#000099"><b>Mirror sites</b></font><p>
+  Loading the tutorial WWW pages can sometimes be very slow.  Try
+  which server has the fastest response time, this is not necessarily
+  the server which is nearest to your location. These teaching pages
+  are currently installed on the sites listed below (mirror sites 
+  might be slightly out-of-date at times).
+
+  <center>
+    <a href=
+    "http://www.uni-wuerzburg.de/mineralogie/crystal/teaching/teaching.html">
+    Department of Crystallography, W&uuml;rzburg, Germany</a>
+    <img src="Pics/deutsch.gif" align=absmiddle><br clear=all>
+    
+    <a href="http://www.pa.msu.edu/cmp/billinge-group/teaching/teaching.html">
+    Michigan State University, East Lansing, USA</a>
+    <img src="Pics/usa.gif" align=absmiddle><br clear=all>
+  </center>
+
+  <p><font color="#000099"><b>Download and local installation</b></font>
+  <p>
+  The tutorial consists of three different parts: The tutorial pages
+  (HTML and GIF pictures) which can be installed on any WWW server. 
+  It is possible to run the interactive examples from one of our main
+  servers, however, if you expect many people to use them (e.g. as part
+  of a lecture) you should install a local copy. To run the interactive
+  examples, you need the programs 
+  <a href="http://www.pa.msu.edu/cmp/billinge-group/programs/discus/discus.html">DISCUS</a>
+  and 
+  <a href="http://www.pa.msu.edu/cmp/billinge-group/programs/discus/kuplot.html">KUPLOT</a>.
+  One also needs to be able to run PERL CGI scripts on a WWW server.
+  <p>
+  Listed below are links where to download the required software and the 
+  teaching archive as well as a brief installation guide. If you experience
+  any problems, feel free to contact us at <a href="mailto:tproffen@ornl.gov">Thomas
+  Proffen</a> or <a href="mailto:reinhard.neder@fau.de">Reinhard
+  Neder</a>.
+
+  As mentioned before, to run the online simulations locally, one needs the scripting
+  language PERL, a WWW server and the programs DISCUS and KUPLOT. Here is a list where
+  one can find these programs in case they are not installed already.
+  <ul>
+    <li><a href="http://www.perl.com/pub/language/info/software.html">Master PERL site</a>
+        (download area)</li>
+    <li><a href="http://httpd.apache.org">APACHE WWW server</a> 
+        (other servers work as well)</li>
+    <li><a href="http://www.pa.msu.edu/cmp/billinge-group/programs/discus/download.html">Diffuse
+        Program Package</a> (contains DISCUS and KUPLOT)</li>
+  </ul>
+  <p>
+  The teaching tutorial itself can be downloaded from the following two sites. Unpack the
+  archive and read the <a href="install.html">installation instructions</a> for more details.
+  <p>
+    <center>
+    <a href=
+    "http://www.uni-wuerzburg.de/mineralogie/crystal/teaching/Distr/diffraction-tutorial.tar.gz">
+    Department of Crystallography, W&uuml;rzburg, Germany</a>
+    <img src="Pics/deutsch.gif" align=absmiddle><br clear=all>
+    
+    <a href="http://www.pa.msu.edu/cmp/billinge-group/teaching/Distr/diffraction-tutorial.tar.gz">
+    Michigan State University, East Lansing, USA</a>
+    <img src="Pics/usa.gif" align=absmiddle><br clear=all>
+  </center>
+  <p>
+  We hope you enjoy the diffraction tutorial and the interactive simulations. If you 
+  have any comments or want to contribute even more interactive simulations, we would 
+  love to hear from you.
+  </td>
+</tr>
+
+<tr>
+  <td align="right" colspan="2" height="5%" bgcolor="#BDC6DE">
+  &copy <a href="mailto:tproffen@ornl.gov">Th. Proffen</a> and <a
+  href="mailto:reinhard.neder@fau.de">R.B. Neder</a>,
+  2016
+  </td>
+</tr></table>
+</body>
+</html> 

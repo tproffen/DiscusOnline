@@ -1,0 +1,118 @@
+<html>
+<head>
+<title>Interactive guide to diffraction ..</title>
+</head> 
+<body bgcolor="#FFFFFF" text="#0A3E00"
+      link="#1A4D73" vlink="#1E5986" alink="#CC0005"
+      topmargin="0" leftmargin="0" rightmargin="0"
+      marginwidth="0" marginheight="0">
+
+<table border=0 cellpadding=10 width=100% height="100%" bgcolor="#BDC6DE">
+
+<tr>
+  <td colspan=2 align="center" height="5%" bgcolor="#BDC6DE">
+    <b>Interactive Tutorial about Diffraction</b><br>
+    <b><font color="#000099" size="+2">Structure solving: 
+       Answers part II</font></b>
+  </td>
+</tr>
+
+<tr>
+ <td valign="top" align="right" bgcolor="#CDD6EE" width="15%">
+ 
+    <center><img src="Pics/diffuse.gif" align="center" vspace="15"></center><p>
+    <p>
+    <font color="#000099"><b>Structure solution</b></font><br>
+    <a href="inv_a.html">Tasks part 1</a><br>
+    <a href="inv_b.html">Answers part 1</a><br>
+    <a href="inv_c.html">Tasks part 2</a><br>
+    <i>Answers part 2</i><br>
+    <a href="inv_e.html">Tasks part 3</a><br>
+    <a href="inv_f.html">Answers part 3</a><p>
+    <font color="#000099"><b>Goto</b></font><br>
+    <a href="teaching.html">Contents</a><br>
+ </td>
+
+ <td bgcolor="#FFFFFF" valign="top">
+  The Patterson syntheses calculated in the last part were:
+  <p>
+  <center>
+    <a href="inv3.html">
+    <img src="Pics/inv3s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="inv4.html">
+    <img src="Pics/inv4s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  <p>
+  <font color="#000099">
+  Why is the Patterson density a periodic function in real space ?</font><p>
+  <ul>
+    <li>A Patterson shows the interatomic vectors of the structure.
+        Since the structure itself is periodic, the distribution of
+        interatomic vectors is periodic as well. You can deduce this
+        straight from the formula:
+        <center>
+          <img src="Pics/invform2.gif" hspace=10 vspace=20 border=0>
+        </center>
+        The complex exponential is identical for the argument mod 2 PI, or
+        for <b>hu</b> mod 1. Thus, if an integer vector <B>u</B> is added,
+        the result remains invariant. Note that this holds only if
+        <b>h</b> is restricted to integer values. </li>
+  </ul>
+  <font color="#000099">
+  Explain the differences between the X-ray and neutron Patterson.<br>
+  Why are the neutron Patterson peaks at 1/2 1/2 0 and at 0.2 0 0 negative ?
+  </font><p>
+  <ul>
+    <li>Each peak in the Patterson represents an interatomic vector. Its
+        height is determined by the number of identical vectors and by
+        the product of the scattering factors of the two atoms. </li>
+    <li>The X-ray intensities are dominated by the metals. The oxygen
+        contributes only a minor fraction to the intensities. Accordingly
+        the X-ray Patterson is dominated by the metal-metal vectors. </li>
+    <li>The neutron scattering lengths of the atoms do not increase with
+        increasing atomic number. The scattering lengths of the elements
+        in this example are:
+        <p><center>
+  <table border="0" bgcolor="#BDC6DE" cellpadding="10">
+  <tr><td bgcolor="#F5F5FF">
+<pre>
+ Zirconium  0.69
+ Titanium  -0.33
+ Oxygen     0.575 </pre>
+   </td></tr></table></center><p></li>
+
+    <li>The peak at 1/2 1/2 0 represents the metal-metal vector. Since
+        the scattering length of Titanium is negative, this peak is
+        negative. Accordingly the peak at 0.2 0 0 represents the
+        Titanium - Oxygen vector. Note that this distinction between
+        the Ti-O and Zr-O could not be made as unambiguously from the
+        X-ray Patterson. </li>
+  </ul>
+  <font color="#000099">
+  Solve the structure, at least for the metal atoms.</font><p>
+  <ul>
+    <li>Using the Patterson peaks and the space group information the
+        structure can easily be solved:
+       <p><center>
+  <table border="0" bgcolor="#BDC6DE" cellpadding="10">
+  <tr><td bgcolor="#F5F5FF">
+<pre>
+ Zirconium  0.5  0.5  0.0
+ Titanium   0.0  0.0  0.0
+ Oxygen     0.2  0.0  0.0</pre>
+  </td></tr></table></center><p></li>
+  </ul>
+  <p>
+  For the final structure determination go to the next section ..
+  </td>
+</tr>
+
+<tr>
+  <td align="right" colspan="2" height="5%" bgcolor="#BDC6DE">
+  &copy <a href="mailto:tproffen@ornl.gov">Th. Proffen</a> and <a
+  href="mailto:reinhard.neder@fau.de">R.B. Neder</a>,
+  2016
+  </td>
+</tr></table>
+</body>
+</html> 

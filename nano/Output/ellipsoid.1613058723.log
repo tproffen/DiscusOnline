@@ -1,0 +1,335 @@
+[49m
+[39m
+ ................................................................................................................................................................................................................................................................
+
+
+
+
+
+
+          ***********************************************************
+          *         D I S C U S - S U I T E  Version 6.05.00        *
+          *                                                         *
+          *         OpenMP is active; maximum threads   1           *
+          *         Created : 2021-01-19                            *
+          *---------------------------------------------------------*
+          * (c) R.B. Neder  (reinhard.neder@fau.de)                 *
+          * (c) T. Proffen  (tproffen@ornl.gov    )                 *
+          ***********************************************************
+
+ Start directory  : /var/www/cgi-bin/DiscusOnline/nano/macros/ellipsoid/
+ Access manuals at each section with   : manual
+ Access help at each section/menu with : help  
+ News at each section/Command_lang in  : help News
+ Change font size with                 : CTRL + /CTRL -
+ ------ > Reading macro main.mac 15,15,cells/nano_znse.cell,xray,3,/var/www/html/DiscusOnline/nano/Output/ellipsoid.1613058723
+
+
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite>  
+ suite> discus
+ discus>  
+ discus> variable real,    radius_ab
+ discus> variable real,    radius_c
+ discus> variable real,    radius
+ discus> variable integer, ncell_ab
+ discus> variable integer, ncell_c
+ discus> variable real,    rhozero
+ discus>  
+ discus> read
+ discus/read> cell cells/nano_znse.cell
+ P63mc             186
+ Lattice constants :
+    a          b          c         alpha      beta       gamma      volume
+    3.99700    3.99700    6.50100   90.00000   90.00000  120.00000    89.9454    
+
+ Metric Tensor     :
+      15.97601     -7.98800      0.00000
+      -7.98800     15.97601      0.00000
+       0.00000      0.00000     42.26300
+
+ Reciprocal Lattice constants :
+    a*         b*         c*        alpha*     beta*      gamma*     volume
+    0.28889    0.28889    0.15382   90.00000   90.00000   60.00000   0.111179E-01
+
+ Reciprocal metric tensor     : 
+       0.08346      0.04173      0.00000
+       0.04173      0.08346      0.00000
+       0.00000      0.00000      0.02366
+
+ discus>  
+ discus> rhozero = n[1]/vol[1]
+ discus>  
+ discus> radius_ab = 15
+ discus> radius_c  = 15
+ discus> radius    = max(radius_ab,radius_c)
+ discus> ncell_ab  = 2*(nint(radius_ab/lat[1])+1)
+ discus> ncell_c   = 2*(nint(radius_c /lat[3])+1)
+ discus>  
+ discus> read
+ discus/read> cell cells/nano_znse.cell,ncell_ab,ncell_ab,ncell_c
+ P63mc             186
+ Lattice constants :
+    a          b          c         alpha      beta       gamma      volume
+    3.99700    3.99700    6.50100   90.00000   90.00000  120.00000    89.9454    
+
+ Metric Tensor     :
+      15.97601     -7.98800      0.00000
+      -7.98800     15.97601      0.00000
+       0.00000      0.00000     42.26300
+
+ Reciprocal Lattice constants :
+    a*         b*         c*        alpha*     beta*      gamma*     volume
+    0.28889    0.28889    0.15382   90.00000   90.00000   60.00000   0.111179E-01
+
+ Reciprocal metric tensor     : 
+       0.08346      0.04173      0.00000
+       0.04173      0.08346      0.00000
+       0.00000      0.00000      0.02366
+
+ discus>  
+ discus> @shear    radius_ab, radius_c
+ discus>  
+ discus>  
+ discus> shear
+ discus/shear> matrix 1,0,0, 0,1,0, 0,0,radius_ab/radius_c
+ discus/shear> origin 0,0,0, crystal
+ discus/shear> sel    all
+ discus/shear> incl   all
+ discus/shear> show
+ Origin of shear element  :        0.0000       0.0000       0.0000  rel. to crystal
+ Real space matrix        :        1.0000       0.0000       0.0000       0.0000
+                          :        0.0000       1.0000       0.0000       0.0000
+                          :        0.0000       0.0000       1.0000       0.0000
+
+ Mode of shear operation  :   Shear atoms
+ Molecule status          :   Keep molecule type
+ Selected atom types      :   VOID(0)   ZN(1)     SE(2)    
+ Range of selected atoms  :   All atoms included
+ discus/shear> run
+ discus/shear> exit
+ discus> boundary  sphere   , radius_ab
+ discus> @shear    radius_c , radius_ab
+ discus>  
+ discus>  
+ discus> shear
+ discus/shear> matrix 1,0,0, 0,1,0, 0,0,radius_c/radius_ab
+ discus/shear> origin 0,0,0, crystal
+ discus/shear> sel    all
+ discus/shear> incl   all
+ discus/shear> show
+ Origin of shear element  :        0.0000       0.0000       0.0000  rel. to crystal
+ Real space matrix        :        1.0000       0.0000       0.0000       0.0000
+                          :        0.0000       1.0000       0.0000       0.0000
+                          :        0.0000       0.0000       1.0000       0.0000
+
+ Mode of shear operation  :   Shear atoms
+ Molecule status          :   Keep molecule type
+ Selected atom types      :   VOID(0)   ZN(1)     SE(2)    
+ Range of selected atoms  :   All atoms included
+ discus/shear> run
+ discus/shear> exit
+ discus>  
+ discus> purge
+ Atom order disturbed. Checking calulation modes ..
+   Peridic boundaries DISABLED ..
+   Chem. neighbor mode set to EXACT ..
+   PDF calculation mode set to EXACT ..
+ discus>  
+ discus> if (3.eq.1 .or. 3.eq.3) then
+ discus> @powder xray,/var/www/html/DiscusOnline/nano/Output/ellipsoid.1613058723
+ discus>  
+ discus>  
+ discus>  
+ discus>  
+ discus>  
+ discus> powder
+ discus> xray
+ discus> set axis,q
+ discus> set calc,debye
+ discus> set disp,off
+ discus> set delta,0.0
+ discus> set qmin,1.1000
+ discus> set qmax,8.1000
+ discus> set dq,  0.005
+ discus> set temp,use
+ discus> set wvle,1.54056
+ discus> set four,four
+ discus> set lpcor,bragg,26.58
+ discus> run
+ discus> exit
+ discus>  
+ discus> output
+ discus> form powder,tth
+ discus> value inte
+ discus> outfile /var/www/html/DiscusOnline/nano/Output/ellipsoid.1613058723.pow
+ discus> run
+ discus> exit
+ discus> endif
+ Computing powder sine lookup table ...
+ Computing sin(theta)/lambda table ...
+  Starting histogram
+
+ Elapsed time H  :  0.637200E-02 sec
+  Starting convolution
+
+ Elapsed time    :  0.300258E-05 sec
+ discus> if (3.eq.2 .or. 3.eq.3) then
+ discus> @pdf    xray,/var/www/html/DiscusOnline/nano/Output/ellipsoid.1613058723
+ discus>  
+ discus>  
+ discus>  
+ discus>  
+ discus>  
+ discus> pdf
+ discus>  
+ discus> set bound, crystal,exact
+ discus> set dens,  rhozero
+ discus> set dens,  0.0
+ discus> set delta, 0.0
+ discus> set gamma, 0.0
+ discus> set qalp,  0.0
+ discus> set qsig,  0.0
+ discus> set qmax,  0.0
+ discus> set rad,   xray
+ discus> set range, 2.5*radius,0.02
+ discus> set srat,  1.0,3.5
+ discus> set therm, gauss
+ discus> set weig,  1.0
+ discus> set finite,sphere, 2.*radius
+ discus>  
+ discus> show
+ discus> calc
+ discus> save pdf,/var/www/html/DiscusOnline/nano/Output/ellipsoid.1613058723.gr
+ discus> exit
+ discus> endif
+ Setting PDF calculation to no periodic bound., 3D, exact mode ..
+ Setting up PDF segment ...
+ Current PDF calculation settings : 
+   Maximum r [A]              :  37.5000
+   Grid size DR [A]           :   0.0200    (        37501 pts)
+   Radiation                  :   X-Rays    (at   0.0000 A**-1)
+
+   Applied corrections        : 
+     Q termination (SINC)     : not applied
+     Instrument resolution    : not applied
+     Periodic boundaries      : not applied
+     4 Pi Rho r correction    :  30.0000 A diameter sphere
+     Weight correction        :   1.00000000
+     Convolution therm. Gauss.: applied
+     Resolution broadening    :   0.0000
+     Quad. correlation fac.   :   0.0000
+     Linear correlation fac.  :   0.0000
+     PDF peak width ratio     :   1.0000 below   3.5000 A
+     Number density           :   0.0000   (Mode: absolute)
+     Correction for RHO0      :   1.0000
+     PDF calculation mode     : all atoms
+
+   Refinement settings        : 
+     Fit minimum r [A]        :   0.0200   (pt.    1)
+     Fit maximum r [A]        :  37.5000   (pt. 1875)
+     Current scale factor     :   1.0000   (refined = F)
+
+   Selected atoms for PDF calculation :
+     Atoms (i)                : ZN(1)     SE(2)    
+     Atoms (j)                : ZN(1)     SE(2)    
+
+   Weights for PDF calculation (internal) :
+     ZN(1)     - ZN(1)        :     0.87930429    
+     ZN(1)     - SE(2)        :     0.99669290    
+     SE(2)     - SE(2)        :      1.1297530    
+ Setting up PDF segment ...
+ Calculating PDF (exact mode) ...
+    20.00 % done  ...
+    40.00 % done  ...
+    60.00 % done  ...
+    80.00 % done  ...
+   100.00 % done  ...
+
+ Elapsed time    :  0.142200E-02 sec
+ Required time        :     0.00 s
+
+ Total sum of weights :    988.6455688    
+ Saving PDF to file : /var/www/html/DiscusOnline/nano/Output/ellipsoid.1613058723.gr ...
+ discus>  
+ discus> @plotx  /var/www/html/DiscusOnline/nano/Output/ellipsoid.1613058723
+ discus>  
+ discus>  
+ discus>  
+ discus> plot
+ discus/plot> program   cif
+ discus/plot> uvw       0,0,1
+ discus/plot> abs       1,0,0
+ discus/plot> ord       0,1,0
+ discus/plot> ext       all
+ discus/plot> vect      0,0,0
+ discus/plot> thick     10000.
+ discus/plot> sel       all
+ discus/plot> outf      /var/www/html/DiscusOnline/nano/Output/ellipsoid.1613058723.cif
+ discus/plot> run
+ discus/plot> exit
+ discus>  
+ discus> fopen 1,/var/www/html/DiscusOnline/nano/Output/ellipsoid.1613058723.info
+ ------ > File /var/www/html/DiscusOnline/nano/Output/ellipsoid.1613058723.info opened (overwriting) ...
+ discus> fput 1,"<b>Number of atoms</b>: %d",n[1]
+ discus> fclose 1
+ discus>  
+ discus> exit
+ suite> exit
+[49m      [39m

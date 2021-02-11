@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>Interactive guide to diffraction ..</title>
+<link href="/styles/discus.css" rel="stylesheet" type="text/css">
+</head>
+<body> 
+
+
+
+
+
+<table border=0 cellpadding=10 width=100% height="100%" bgcolor="#BDC6DE">
+
+<tr>
+  <td colspan=2 align="center" height="5%" bgcolor="#BDC6DE">
+    <b>Interactive Tutorial about Diffraction</b><br>
+    <b><font color="#000099" size="+2">Phase problem I:
+       Shift in real space</font></b>
+  </td>
+</tr>
+
+<tr>
+ <td valign="top" align="right" bgcolor="#CDD6EE" width="15%">
+ 
+    <center><img src="Pics/diffuse.gif" align="center" vspace="15"></center><p>
+    <p>
+    <font color="#000099"><b>Phase problem</b></font><br>
+    <i>Shift in real space</i><br>
+    <a href="pha_b.html">Centrosymmetric vs. Acentric</a><p>
+    
+    <font color="#000099"><b>Interactive examples</b></font><br>
+    <a href="iphase_a.html">Single atom</a><br>
+    <a href="iphase_b.html">Pair of atoms</a><br>
+    <a href="iphase_f.html">One atom in unit cell</a><br>
+    <a href="iphase_g.html">Two atoms in unit cell</a><p>
+    <font color="#000099"><b>Goto</b></font><br>
+    <a href="teaching.html">Contents</a><br>
+ </td>
+
+ <td bgcolor="#FFFFFF" valign="top">
+  In this exercise we look again at the Fourier transform of a single atom.
+  The calculations are performed twice, once for the <font color="#0000FF">
+  blue atom</font> at the origin of real space and second for the <font
+  color="#FF0000"> red atom</font> shifted to 0.5, 0, 0. Note that this is
+  <B>not</B> a periodic crystal. The first image shows the two different
+  positions.
+  <p>
+  <center>
+    <a href="pha1.html">
+    <img src="Pics/pha1s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  <p>
+  The Fourier transforms were calculated along a line through reciprocal space
+  from -5.5,0,0 to +5.5,0,0. The left image shows the real(<font color=
+  "#0000FF">blue</font>) and imaginary (<font color="#FF0000">red</font>) 
+  part for the atom at 0,0,0. The corresponding intensities reduced by a 
+  factor of 10 are shown in <font color="#60FF60">green color</font>. 
+  The middle image shows the corresponding values for the atom shifted in 
+  real space.  The right image shows the phase of the wave scattered by the 
+  atom at 0,0,0 (<font color="#0000FF">blue</font>) and the shifted atom 
+  (<font color="#FF0000">red</font>).
+  <p>
+  <center>
+    <a href="pha2.html">
+    <img src="Pics/pha2s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="pha3.html">
+    <img src="Pics/pha3s.gif" hspace=5  vspace=5 border=0></a>
+    <a href="pha4.html">
+    <img src="Pics/pha4s.gif" hspace=5  vspace=5 border=0></a>
+  </center>
+  <p>
+  In the above left image the real part of the amplitude is positive, while 
+  the imaginary part is zero, as expected from a centrosymmetric structure. 
+  In the middle image, the Fourier transform of the atom shifted in real space,
+  the real and the imaginary part oscillate. The resulting intensity, 
+  however, is identical in both cases! The information about the phase is lost.
+  This marks a good opportunity to discuss the crystallographic phase problem.
+  <p>
+  The phase of the wave scattered by the atom at 0,0,0 (<font 
+  COLOR="#0000FF">blue</FONT>) is zero at all points in reciprocal space, as 
+  expected. With the atom at 0.5,0,0 (<font color="#FF0000">red</font>),
+  however, the phase oscillates between -180 and 180 degrees with a wave 
+  length of two reciprocal lattice units. Both structures are centrosymmetric, 
+  the only difference is the shift of origin by -0.5,0,0 ! A quick look at 
+  the properties of Fourier transforms reveals the cause. A real space shift 
+  results in multiplication with a phase factor in reciprocal space:
+
+  <center>
+    <img src="Pics/phaform1.gif"  vspace=40 hspace=10 border=0>
+  </center>
+
+  The complex exponential results in the phase factor shown in the top right 
+  image. The students will learn from this exercise:
+  <p>
+  <ul>
+    <li>Real space translation results in a reciprocal space phase
+        oscillation </li>
+    <li>The intensity is invariant under a shift of origin ==> crystallographic
+        phase problem</li>
+    <li>The phase of diffraction calculated for a crystal simulated in the
+        computer depends on the position of the origin. Unless the center of
+        symmetry of the real space structure is at 0,0,0 the resulting
+        amplitudes are complex, even for a centrosymmetric structure.</li>
+  </ul>
+  <p>
+  Possible extensions of this exercise:
+  <ul>
+     <li>Have the students vary the real space shift, in order to show that
+         the periodicity of the reciprocal phase oscillation is indeed 1/a.</LI>
+     <li>Have the students calculate a 2-dimensional Fourier transform, in order
+         to learn that the phase oscillates only parallel to the shift vector.
+         </li>
+     <LI>Combine the 2-D Fourier with a change of length and direction of the
+         shift vector.</li>
+  </ul>
+  </td>
+</tr>
+
+<tr>
+  <td align="right" colspan="2" height="5%" bgcolor="#BDC6DE">
+  &copy <a href="mailto:tproffen@ornl.gov">Th. Proffen</a> and <a
+  href="mailto:reinhard.neder@fau.de">R.B. Neder</a>,
+  2016
+  </td>
+</tr></table>
+</body>
+</html> 
