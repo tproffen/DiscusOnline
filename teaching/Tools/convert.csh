@@ -1,6 +1,6 @@
 #!/bin/tcsh
 foreach i (*.html)
   echo $i
-  rm -f $i
+  mv $i $i.orig
   ./Tools/convert.sed < $i.orig > $i
 end
