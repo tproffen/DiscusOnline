@@ -31,14 +31,10 @@ use POSIX qw(strftime);
 #
 #########################################################################
 
-#------------------------------------------------------------------------
-# MSU
-#------------------------------------------------------------------------
-
-$dishtml="/legacy/teaching/Output";
-$discgi ="/cgi-bin/legacy/teaching/discus2.cgi";
-$disdir ="/var/www/lighttpd/legacy/teaching/Output";
-$cgidir ="/var/www/lighttpd/cgi-bin/legacy/teaching/";
+$dishtml="/discus/teaching/Output";
+$discgi ="/discus/cgi-bin/teaching/discus2.cgi";
+$disdir ="/var/www/html/DiscusOnline/teaching/Output";
+$cgidir ="/var/www/cgi-bin/DiscusOnline/teaching/";
 $discus ="/usr/local/bin";
 $grfont ="/usr/local/pgplot/grfont.dat";
 $disurl ="http://tproffen.github.io/DiffuseCode/";
@@ -131,7 +127,7 @@ MAIN:
   print $cgi->header;
   print "<html>\n<head>\n";
   print "<title>$title</title>\n";
-  print "<link href=\"/styles/discus.css\" ";
+  print "<link href=\"/discus/styles/discus.css\" ";
   print "      rel=\"stylesheet\"  type=\"text/css\">\n";
 
   print "<script language=\"JavaScript\">\n";
