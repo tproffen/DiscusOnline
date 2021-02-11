@@ -1,0 +1,270 @@
+##################################################################
+# This macro exectutes DISCUS and KUPLOT for SRO example ..
+#
+# Version: 1.0
+# Author:  Th. Proffen  (tproffen@lanl.gov)
+#          R.B. Neder   (reinhard.neder@mail.uni-wuerzburg.de)
+##################################################################
+# Required parameters:
+#
+#    $1 : Concentration (in %)
+#    $2 : Correlation a100
+#    $3 : Correlation a010
+#    $4 : Correlation a110=a1-10
+#    $5 : Correlation a200
+#    $6 : Correlation a020
+#    $7 : Radiation to be used
+#    $8 : Number MC cycles
+#    $9 : Output graphics size
+#
+##################################################################
+# Here we start DISCUS
+##################################################################
+#
+set prompt,redirect
+set error,exit
+#
+discus
+fopen 1,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+if (($1).lt.0.0 .or. ($1).gt.100.0) then
+  fopen 1,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+  fput 1,'<h2>Concentration must 0.0 to 100.0% !</h2>'
+  fclose 1
+elseif (($2).lt.-1.0 .or. ($2).gt.1.0) then
+  fopen 1,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+  fput 1,'<h2>Correlation value <i>a100</i> must be -1.0 to 1.0 !</h2>'
+  fclose 1
+elseif (($3).lt.-1.0 .or. ($3).gt.1.0) then
+  fopen 1,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+  fput 1,'<h2>Correlation value <i>a010</i> must be -1.0 to 1.0 !</h2>'
+  fclose 1
+elseif (($4).lt.-1.0 .or. ($4).gt.1.0) then
+  fopen 1,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+  fput 1,'<h2>Correlation value <i>a110</i> must be -1.0 to 1.0 !</h2>'
+  fclose 1
+elseif (($5).lt.-1.0 .or. ($5).gt.1.0) then
+  fopen 1,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+  fput 1,'<h2>Correlation value <i>a200</i> must be -1.0 to 1.0 !</h2>'
+  fclose 1
+elseif (($6).lt.-1.0 .or. ($6).gt.1.0) then
+  fopen 1,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+  fput 1,'<h2>Correlation value <i>a020</i> must be -1.0 to 1.0 !</h2>'
+  fclose 1
+elseif (($8).lt.1 .or. ($8).gt.1000) then
+  fopen 1,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+  fput 1,'<h2>Number of MC cycles must be between 1 and 1000 !</h2>'
+  fclose 1
+else
+#
+  sys echo 'title Structure in Spacegroup P1      '  > tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll
+  sys echo 'spcgr P1                              ' >> tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll
+  sys echo 'cell 5.00 5.00 5.00 90. 90. 90.       ' >> tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll
+  sys echo 'atoms                                 ' >> tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll
+  sys echo 'PB   0.00  0.00  0.00   0.4           ' >> tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll
+#
+  read
+  cell tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.cll,50,50,1
+  seed 12345
+  replace pb,void,all,$1/100.0
+  chem
+    elem
+    r[99]=100.0*res[1]
+  exit
+#
+  mmc
+    set neig,rese
+#
+    set vec, 1,1,1, 1, 0, 0
+    set vec, 2,1,1,-1, 0, 0
+    set neig,vec,1,2
+    set neig,add
+#
+    set vec, 3,1,1, 0, 1, 0
+    set vec, 4,1,1, 0,-1, 0
+    set neig,vec,3,4
+    set neig,add
+#
+    set vec, 5,1,1, 1, 1, 0
+    set vec, 6,1,1,-1, 1, 0
+    set vec, 7,1,1, 1,-1, 0
+    set vec, 8,1,1,-1,-1, 0
+    set neig,vec,5,6,7,8
+    set neig,add
+#
+    set vec, 9,1,1, 2, 0, 0
+    set vec,10,1,1,-2, 0, 0
+    set neig,vec,9,10
+    set neig,add
+#
+    set vec,11,1,1, 0, 2, 0
+    set vec,12,1,1, 0,-2, 0
+    set neig,vec,11,12
+#
+    set mode,1.0,swchem,local
+#
+    set targ,1,corr,pb,void,$2,0.0,CORR
+    set targ,2,corr,pb,void,$3,0.0,CORR
+    set targ,3,corr,pb,void,$4,0.0,CORR
+    set targ,4,corr,pb,void,$5,0.0,CORR
+    set targ,5,corr,pb,void,$6,0.0,CORR
+#
+    set cyc,$8*n[1]
+    set feed,n[1]
+    set temp,1.0
+#
+    run
+#
+    r[11]=res[1]
+    r[12]=res[2]
+    r[13]=res[3]
+    r[14]=res[4]
+    r[15]=res[5]
+#
+  exit
+#
+  plot
+    prog kuplot
+    sel all
+    ext all
+    set PB  ,3,6,1.0
+    set VOID,3,5,1.0
+    uvw 0,0,1
+    thick 1.0
+    outfile tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.plot
+    run
+  exit
+#
+  if ($7.eq.1) then
+    four
+    xray
+    exit
+  else
+    four
+    neut
+    exit
+  endif
+#
+  four
+    ll 0.0,0.0,0.0
+    lr 5.0,0.0,0.0
+    ul 0.0,5.0,0.0
+    no 251
+    na 251
+    run
+  exit
+#
+  output
+    value inte
+    form stand
+    outf tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.inte
+    run
+  exit
+#
+  fopen 1,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.output
+  fform 2,f7.3
+  fform 4,f7.3
+  fput 1,'<b>Concentration achieved (%)</b> :',r[99],'<br>'
+  fput 1,'<b>Correlations</b><br>'
+  fput 1,'  a(100): Target: ',$2,' - Achieved: ',r[11],'<br>'
+  fput 1,'  a(010): Target: ',$3,' - Achieved: ',r[12],'<br>'
+  fput 1,'  a(110): Target: ',$4,' - Achieved: ',r[13],'<br>'
+  fput 1,'  a(200): Target: ',$5,' - Achieved: ',r[14],'<br>'
+  fput 1,'  a(020): Target: ',$6,' - Achieved: ',r[15],'<br>'
+  fclose 1
+#
+  system rm -f teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+#
+endif
+#
+exit
+#
+##################################################################
+# Here we start KUPLOT
+##################################################################
+#
+system rm -f teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+#
+kuplot
+#
+fopen 1,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+fput 1,'<h2>An error occured during the calculations.</h2>'
+fput 1,'<p>Check that numerical fields contain numbers only'
+fput 1,'   and that atom names are spelled correctly'
+fclose 1
+#
+rese
+#
+load cr,tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.plot
+load ni,tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.inte
+glat 2,3
+#
+buf 0.06
+lwid 0,0.1
+font just,center
+font typ,1,1
+font typ,2,1
+font typ,3,1
+font typ,4,1
+font typ,5,1
+font typ,6,1
+#
+nfra 2
+#
+afra 1
+kfra 1,1
+ccal add,wx,1,26.0
+ccal add,wy,1,26.0
+fset 2
+mark 10,10
+grid off
+aver 1
+skal 0.,51.,0.,51.
+achx x [l.u.]
+achy y [l.u.]
+tit1 Disordered structure
+tit2 MC cycles: $8
+fnam off
+msiz 1,0.1
+#
+afra 2
+kfra 2,2
+skal
+mark 1,1
+aver 1
+achx h
+achy k
+achz Intensity
+if ($7.eq.1) then
+  tit1 Scattering: X-ray 
+else
+  tit1 Scattering: Neutrons
+endif
+tit2 Scale: 1.1 * Average scattering
+fnam off
+lcol 0,5
+grid on
+fset 2
+mean 2
+hlin 1,0.0,1.1*res[3],1
+hart 2,2
+cmap fire
+#
+save ps,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.ps
+size[3]=$9
+save pic,teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.gif
+#
+system rm -f teach_sro_$1_$2_$3_$4_$5_$6_$7_$8_$9.err
+#
+exit
+#
+##################################################################
+# Some cleaning up - only GIF output remains
+##################################################################
+#
+system rm -f tmp_$1_$2_$3_$4_$5_$6_$7_$8_$9.*
+exit

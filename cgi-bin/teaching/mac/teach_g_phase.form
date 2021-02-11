@@ -1,0 +1,36 @@
+# (c) Thomas Proffen, 2003
+
+title=Phase angles
+
+# Syntax:
+#   text=no,size,default,label
+#   radio=no,size,default,label
+#     label,value
+#   gsize=no
+#   submit
+
+text=1,5,0.0,Position atom 1 - x
+text=2,5,0.0,y
+
+HR
+radio=3,3,1,Atom type 1
+Hydrogen,1
+Silicon,2
+Lead,3
+
+HR
+text=4,5, 0.3,Position atom 2 - x
+text=5,5,-0.3,y
+
+HR
+radio=6,3,1,Atom type 2
+Hydrogen,1
+Silicon,2
+Lead,3
+
+HR
+text=7,5,1.0,Bragg reflection h
+text=8,5,0.0,k
+
+HR
+submit

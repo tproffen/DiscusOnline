@@ -1,0 +1,15 @@
+#  plotx.mac
+################################################################################
+#
+plot
+  program   cif
+  uvw       0,0,1
+  abs       1,0,0
+  ord       0,1,0
+  ext       all
+  vect      0,0,0
+  thick     10000.
+  sel       all
+  outf      $1.cif
+  run
+exit
